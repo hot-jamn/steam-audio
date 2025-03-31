@@ -17,6 +17,7 @@
 #pragma once
 
 #include "memory_allocator.h"
+#include <chrono>
 
 namespace ipl {
 
@@ -56,6 +57,8 @@ namespace Profiler
 
 #if defined(IPL_ENABLE_TELEMETRY)
 #include "telemetry_profiler.h"
+#elif defined(IPL_ENABLE_TRACY)
+#include "tracy_profiler.h"
 #else
 #include "null_profiler.h"
 #endif
