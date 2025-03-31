@@ -22,7 +22,47 @@
 #include "thread_pool.h"
 #include "profiler.h"
 
+#include <fstream>
+#include <vector>
+
 namespace ipl {
+
+// Helper function to write a .wav file
+void exportImpulseResponseAsWav(const std::vector<float>& impulseResponse, int sampleRate, const std::string& filePath) {
+    std::ofstream outFile(filePath, std::ios::binary);
+
+    // WAV file header
+    int dataSize = impulseResponse.size() * sizeof(float);
+    int fileSize = 36 + dataSize;
+
+    outFile.write("RIFF", 4);
+    outFile.write(reinterpret_cast<const char*>(&fileSize), 4);
+    outFile.write("WAVE", 4);
+    outFile.write("fmt ", 4);
+
+    int fmtChunkSize = 16;
+    short audioFormat = 3; // IEEE float
+    short numChannels = 1; // Mono
+    outFile.write(reinterpret_cast<const char*>(&fmtChunkSize), 4);
+    outFile.write(reinterpret_cast<const char*>(&audioFormat), 2);
+    outFile.write(reinterpret_cast<const char*>(&numChannels), 2);
+    outFile.write(reinterpret_cast<const char*>(&sampleRate), 4);
+
+    int byteRate = sampleRate * numChannels * sizeof(float);
+    short blockAlign = numChannels * sizeof(float);
+    short bitsPerSample = 32;
+    outFile.write(reinterpret_cast<const char*>(&byteRate), 4);
+    outFile.write(reinterpret_cast<const char*>(&blockAlign), 2);
+    outFile.write(reinterpret_cast<const char*>(&bitsPerSample), 2);
+
+    outFile.write("data", 4);
+    outFile.write(reinterpret_cast<const char*>(&dataSize), 4);
+
+    // Write impulse response data
+    outFile.write(reinterpret_cast<const char*>(impulseResponse.data()), dataSize);
+
+    outFile.close();
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 // ReflectionBaker
@@ -196,6 +236,11 @@ void ReflectionBaker::bake(const IScene& scene,
                     }
 
                     static_cast<BakedReflectionsData&>(probeBatch[identifier]).set(indices[j], std::move(energyField));
+
+                    std::vector<float> impulseResponse = energyFields[j]->getImpulseResponse();
+                    int sampleRate = 44100;
+                    std::string filePath = "output/impulse_response_" + std::to_string(indices[j]) + ".wav";
+                    exportImpulseResponseAsWav(impulseResponse, sampleRate, filePath);
                 }
             }
 

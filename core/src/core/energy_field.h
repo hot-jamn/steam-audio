@@ -50,6 +50,16 @@ public:
         return static_cast<int>(mData.size(2));
     }
 
+    std::vector<float> getImpulseResponse() const
+    {
+        std::vector<float> impulseResponse(numBins());
+        for (int i = 0; i < numBins(); ++i)
+        {
+            impulseResponse[i] = data()[0][0][i]; // Assuming we want the first channel's impulse response
+        }
+        return impulseResponse;
+    }
+
     float* flatData()
     {
         return mData.flatData();
