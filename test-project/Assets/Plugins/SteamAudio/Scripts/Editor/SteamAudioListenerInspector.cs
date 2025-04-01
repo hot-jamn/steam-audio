@@ -30,7 +30,6 @@ namespace SteamAudio
         SerializedProperty mProbeBatches;
         SerializedProperty mBakePath;
         SerializedProperty mBitsPerSample;
-        SerializedProperty mChannels;
 
         bool mStatsFoldout = false;
         bool mShouldShowProgressBar = false;
@@ -44,7 +43,6 @@ namespace SteamAudio
             mProbeBatches = serializedObject.FindProperty("probeBatches");
             mBakePath = serializedObject.FindProperty("bakePath");
             mBitsPerSample = serializedObject.FindProperty("bitsPerSample");
-            mChannels = serializedObject.FindProperty("channels");
         }
 
         public override void OnInspectorGUI()
@@ -62,10 +60,9 @@ namespace SteamAudio
             var tgt = target as SteamAudioListener;
             EditorGUILayout.PropertyField(mBakePath);
             EditorGUILayout.PropertyField(mBitsPerSample);
-            EditorGUILayout.PropertyField(mChannels);
             if (GUILayout.Button("Bake IR"))
             {
-                tgt.BakeIR();
+                tgt.export = true;
             }
 
             var oldGUIEnabled = GUI.enabled;

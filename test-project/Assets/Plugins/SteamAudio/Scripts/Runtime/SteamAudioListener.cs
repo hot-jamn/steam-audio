@@ -56,8 +56,6 @@ namespace SteamAudio
         [SerializeField] private string bakePath = "output.wav";
         private string BakePath => Application.dataPath + "/" + bakePath;
         [SerializeField] private int bitsPerSample = 16; // Choose appropriate size, e.g., 16-bit
-        [SerializeField] private int channels = 4;
-
 
 #if STEAMAUDIO_ENABLED
         Simulator mSimulator = null;
@@ -103,23 +101,21 @@ namespace SteamAudio
             SteamAudioManager.GetAudioEngineState().SetReverbSource(mSource);
         }
         
-        // [Button]
         public void BakeIR()
         {
             SetInputs(SimulationFlags.Reflections);
             var outputs = mSource.GetOutputs(SimulationFlags.Reflections);
             
             var sampleRate = SteamAudioManager.AudioSettings.samplingRate; // Choose appropriate rate, e.g., 44100 Hz
-            var bytes = (int) (sampleRate * channels * SteamAudioSettings.Singleton.realTimeDuration * (bitsPerSample / 8f));
-            Debug.Log($"Bytes: {bytes} vs {outputs.reflections.irSize * channels * (bitsPerSample / 8)}");
+            var bytes = outputs.reflections.irSize * outputs.reflections.numChannels * (bitsPerSample / 8);
             var rawData = new byte[bytes];
             
+            Debug.Log($"{outputs.reflections.irSize / sampleRate} {outputs.reflections.numChannels} {bytes}");
             Marshal.Copy(outputs.reflections.ir, rawData, 0, bytes);
 
             // WAV properties
-            Debug.Log($"Sample Rate: {sampleRate} Bits Per Sample: {bitsPerSample} Channels: {channels}");
             
-            var wavData = AddWavHeader(rawData, sampleRate, bitsPerSample, channels);
+            var wavData = AddWavHeader(rawData, sampleRate, bitsPerSample, 2);
             File.WriteAllBytes(BakePath, wavData);
 
             Debug.Log("Baked IR saved as WAV.");
@@ -190,6 +186,15 @@ namespace SteamAudio
         private void Update()
         {
             SteamAudioManager.GetAudioEngineState().SetReverbSource(mSource);
+        }
+
+        public bool export = false;
+
+        private void FixedUpdate()
+        {
+            if (!export) return;
+            BakeIR();
+            export = false;
         }
 
         public BakedDataIdentifier GetBakedDataIdentifier()
