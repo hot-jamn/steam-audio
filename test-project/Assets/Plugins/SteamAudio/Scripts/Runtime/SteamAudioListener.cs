@@ -52,8 +52,12 @@ namespace SteamAudio
         [SerializeField]
         SteamAudioProbeBatch[] mProbeBatchesUsed = null;
 
-        public string bakePath = "output.wav";
+        [Header("IR Baking Settings")]
+        [SerializeField] private string bakePath = "output.wav";
         private string BakePath => Application.dataPath + "/" + bakePath;
+        [SerializeField] private int bitsPerSample = 16; // Choose appropriate size, e.g., 16-bit
+        [SerializeField] private int channels = 4;
+
 
 #if STEAMAUDIO_ENABLED
         Simulator mSimulator = null;
@@ -104,14 +108,15 @@ namespace SteamAudio
         {
             SetInputs(SimulationFlags.Reflections);
             var outputs = mSource.GetOutputs(SimulationFlags.Reflections);
-            var rawData = new byte[outputs.reflections.irSize];
-            Marshal.Copy(outputs.reflections.ir, rawData, 0, outputs.reflections.irSize);
+            
+            var sampleRate = SteamAudioManager.AudioSettings.samplingRate; // Choose appropriate rate, e.g., 44100 Hz
+            var bytes = (int) (sampleRate * channels * SteamAudioSettings.Singleton.realTimeDuration * (bitsPerSample / 8f));
+            Debug.Log($"Bytes: {bytes} vs {outputs.reflections.irSize * channels * (bitsPerSample / 8)}");
+            var rawData = new byte[bytes];
+            
+            Marshal.Copy(outputs.reflections.ir, rawData, 0, bytes);
 
             // WAV properties
-            var sampleRate = SteamAudioManager.AudioSettings.samplingRate; // Choose appropriate rate, e.g., 44100 Hz
-            var bitsPerSample = SteamAudioManager.AudioSettings.frameSize / outputs.reflections.numChannels / 8; // Choose appropriate size, e.g., 16-bit
-            var channels = outputs.reflections.numChannels;
-            
             Debug.Log($"Sample Rate: {sampleRate} Bits Per Sample: {bitsPerSample} Channels: {channels}");
             
             var wavData = AddWavHeader(rawData, sampleRate, bitsPerSample, channels);
