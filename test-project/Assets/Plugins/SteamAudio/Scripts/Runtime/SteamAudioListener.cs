@@ -109,7 +109,7 @@ namespace SteamAudio
 
             // WAV properties
             var sampleRate = SteamAudioManager.AudioSettings.samplingRate; // Choose appropriate rate, e.g., 44100 Hz
-            var bitsPerSample = 16; // Choose appropriate size, e.g., 16-bit
+            var bitsPerSample = SteamAudioManager.AudioSettings.frameSize / outputs.reflections.numChannels / 8; // Choose appropriate size, e.g., 16-bit
             var channels = outputs.reflections.numChannels;
             
             Debug.Log($"Sample Rate: {sampleRate} Bits Per Sample: {bitsPerSample} Channels: {channels}");

@@ -756,6 +756,70 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1613637331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1613637333}
+  - component: {fileID: 1613637332}
+  m_Layer: 0
+  m_Name: SteamListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1613637332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613637331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd9ebf1401392e4bbd47fea32f47642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentBakedListener: {fileID: 0}
+  applyReverb: 1
+  reverbType: 0
+  useAllProbeBatches: 0
+  probeBatches:
+  - {fileID: 1635505314}
+  mTotalDataSize: 245312
+  mProbeDataSizes: 40be0300
+  mIdentifier:
+    type: 0
+    variation: 0
+    endpointInfluence:
+      center:
+        x: 0
+        y: 0
+        z: 0
+      radius: 0
+  mProbeBatchesUsed:
+  - {fileID: 1635505314}
+  bakePath: output.wav
+--- !u!4 &1613637333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613637331}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1635505313
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,9 +853,124 @@ MonoBehaviour:
   horizontalSpacing: 5
   heightAboveFloor: 1.5
   asset: {fileID: 11400000, guid: 21e14c1222e66664bb96f57b8688bc9a, type: 2}
-  probeDataSize: 364
+  probeDataSize: 261772
   mProbeSpheres:
   - center:
+      x: -15
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: -15
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
+      x: -15
+      y: -0.6300001
+      z: -5
+    radius: 5
+  - center:
+      x: -15
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: -15
+      y: -0.6300001
+      z: 5
+    radius: 5
+  - center:
+      x: -15
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: -15
+      y: -0.6300001
+      z: 15
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: -5
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: 5
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: -10
+      y: -0.6300001
+      z: 15
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: -5
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: 5
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: -5
+      y: -0.6300001
+      z: 15
+    radius: 5
+  - center:
+      x: 0
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: 0
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
       x: 0
       y: 3.5
       z: -5
@@ -803,6 +982,11 @@ MonoBehaviour:
     radius: 5
   - center:
       x: 0
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: 0
       y: 3.5
       z: 5
     radius: 5
@@ -810,6 +994,121 @@ MonoBehaviour:
       x: 0
       y: -0.5
       z: 5
+    radius: 5
+  - center:
+      x: 0
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: 0
+      y: -0.6300001
+      z: 15
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: -5
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: 5
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: 5
+      y: -0.6300001
+      z: 15
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: -5
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: 5
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: 10
+      y: -0.6300001
+      z: 15
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: -15
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: -10
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: -5
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: 0
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: 5
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: 10
+    radius: 5
+  - center:
+      x: 15
+      y: -0.6300001
+      z: 15
     radius: 5
   mBakedDataLayerInfo:
   - gameObject: {fileID: 1635505313}
@@ -822,7 +1121,18 @@ MonoBehaviour:
           y: 0
           z: 0
         radius: 0
-    dataSize: 84
+    dataSize: 14048
+  - gameObject: {fileID: 1613637331}
+    identifier:
+      type: 0
+      variation: 0
+      endpointInfluence:
+        center:
+          x: 0
+          y: 0
+          z: 0
+        radius: 0
+    dataSize: 245312
 --- !u!4 &1635505315
 Transform:
   m_ObjectHideFlags: 0
@@ -953,7 +1263,7 @@ Transform:
   m_GameObject: {fileID: 1685553103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.63, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -972,3 +1282,4 @@ SceneRoots:
   - {fileID: 580248556}
   - {fileID: 786409386}
   - {fileID: 195097419}
+  - {fileID: 1613637333}
