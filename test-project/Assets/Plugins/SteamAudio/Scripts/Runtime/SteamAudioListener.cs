@@ -15,7 +15,10 @@
 //
 
 using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Windows;
+using UnityEditor;
 
 namespace SteamAudio
 {
@@ -24,6 +27,7 @@ namespace SteamAudio
         Realtime,
         Baked
     }
+    
 
     [AddComponentMenu("Steam Audio/Steam Audio Listener")]
     public class SteamAudioListener : MonoBehaviour
@@ -47,6 +51,9 @@ namespace SteamAudio
         BakedDataIdentifier mIdentifier = new BakedDataIdentifier { };
         [SerializeField]
         SteamAudioProbeBatch[] mProbeBatchesUsed = null;
+
+        public string bakePath = "output.wav";
+        private string BakePath => Application.dataPath + "/" + bakePath;
 
 #if STEAMAUDIO_ENABLED
         Simulator mSimulator = null;
@@ -90,6 +97,56 @@ namespace SteamAudio
             mSource = new Source(SteamAudioManager.Simulator, settings);
 
             SteamAudioManager.GetAudioEngineState().SetReverbSource(mSource);
+        }
+        
+        // [Button]
+        public void BakeIR()
+        {
+            SetInputs(SimulationFlags.Reflections);
+            var outputs = mSource.GetOutputs(SimulationFlags.Reflections);
+            var rawData = new byte[outputs.reflections.irSize];
+            Marshal.Copy(outputs.reflections.ir, rawData, 0, outputs.reflections.irSize);
+
+            // WAV properties
+            var sampleRate = SteamAudioManager.AudioSettings.samplingRate; // Choose appropriate rate, e.g., 44100 Hz
+            var bitsPerSample = 16; // Choose appropriate size, e.g., 16-bit
+            var channels = outputs.reflections.numChannels;
+            
+            Debug.Log($"Sample Rate: {sampleRate} Bits Per Sample: {bitsPerSample} Channels: {channels}");
+            
+            var wavData = AddWavHeader(rawData, sampleRate, bitsPerSample, channels);
+            File.WriteAllBytes(BakePath, wavData);
+
+            Debug.Log("Baked IR saved as WAV.");
+        }
+
+        private byte[] AddWavHeader(byte[] audioData, int sampleRate, int bitsPerSample, int channels)
+        {
+            var byteRate = sampleRate * channels * (bitsPerSample / 8);
+            var blockAlign = channels * (bitsPerSample / 8);
+
+            // WAV Header
+            var header = new byte[44];
+            Buffer.BlockCopy(System.Text.Encoding.ASCII.GetBytes("RIFF"), 0, header, 0, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(36 + audioData.Length), 0, header, 4, 4); // File size
+            Buffer.BlockCopy(System.Text.Encoding.ASCII.GetBytes("WAVE"), 0, header, 8, 4);
+            Buffer.BlockCopy(System.Text.Encoding.ASCII.GetBytes("fmt "), 0, header, 12, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(16), 0, header, 16, 4); // Format chunk size
+            Buffer.BlockCopy(BitConverter.GetBytes((short)1), 0, header, 20, 2); // Audio format (1 for PCM)
+            Buffer.BlockCopy(BitConverter.GetBytes((short)channels), 0, header, 22, 2); // Channels
+            Buffer.BlockCopy(BitConverter.GetBytes(sampleRate), 0, header, 24, 4); // Sample rate
+            Buffer.BlockCopy(BitConverter.GetBytes(byteRate), 0, header, 28, 4); // Byte rate
+            Buffer.BlockCopy(BitConverter.GetBytes((short)blockAlign), 0, header, 32, 2); // Block align
+            Buffer.BlockCopy(BitConverter.GetBytes((short)bitsPerSample), 0, header, 34, 2); // Bits per sample
+            Buffer.BlockCopy(System.Text.Encoding.ASCII.GetBytes("data"), 0, header, 36, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(audioData.Length), 0, header, 40, 4); // Data chunk size
+
+            // Combine header and data
+            var wavData = new byte[header.Length + audioData.Length];
+            Buffer.BlockCopy(header, 0, wavData, 0, header.Length);
+            Buffer.BlockCopy(audioData, 0, wavData, header.Length, audioData.Length);
+
+            return wavData;
         }
 
         private void OnDestroy()

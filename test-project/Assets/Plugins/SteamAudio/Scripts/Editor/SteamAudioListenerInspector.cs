@@ -28,6 +28,7 @@ namespace SteamAudio
         SerializedProperty mReverbType;
         SerializedProperty mUseAllProbeBatches;
         SerializedProperty mProbeBatches;
+        SerializedProperty mBakePath;
 
         bool mStatsFoldout = false;
         bool mShouldShowProgressBar = false;
@@ -39,6 +40,7 @@ namespace SteamAudio
             mReverbType = serializedObject.FindProperty("reverbType");
             mUseAllProbeBatches = serializedObject.FindProperty("useAllProbeBatches");
             mProbeBatches = serializedObject.FindProperty("probeBatches");
+            mBakePath = serializedObject.FindProperty("bakePath");
         }
 
         public override void OnInspectorGUI()
@@ -53,10 +55,15 @@ namespace SteamAudio
                 EditorGUILayout.PropertyField(mReverbType);
             }
 
+            var tgt = target as SteamAudioListener;
+            EditorGUILayout.PropertyField(mBakePath);
+            if (GUILayout.Button("Bake IR"))
+            {
+                tgt.BakeIR();
+            }
+
             var oldGUIEnabled = GUI.enabled;
             GUI.enabled = !Baker.IsBakeActive() && !EditorApplication.isPlayingOrWillChangePlaymode;
-
-            var tgt = target as SteamAudioListener;
 
             EditorGUILayout.PropertyField(mUseAllProbeBatches);
             if (!mUseAllProbeBatches.boolValue)
