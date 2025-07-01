@@ -75,6 +75,8 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
     state->functions->getsamplerate(state, &audioSettings.samplingRate);
     state->functions->getblocksize(state, reinterpret_cast<unsigned int*>(&audioSettings.frameSize));
 
+    std::cout << "Initialized mix return" << std::endl;
+
     if (!gContext && isRunningInEditor())
     {
         initContextAndDefaultHRTF(audioSettings);
@@ -122,6 +124,10 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_REFLECTIONEFFECT);
     }
+else {
+    std::cout << "SIMULATION SETTINGS NOT VALID." << std::endl;
+
+}
 
     if (numChannelsOut > 0 && gIsSimulationSettingsValid)
     {
@@ -148,6 +154,9 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_AMBISONICSEFFECT);
     }
+else {
+    std::cout << "CHANNEL COUNT IS 0 or SIMULATION SETTINGS NOT VALID" << std::endl;
+}
 
     if (numChannelsIn > 0 && numChannelsOut > 0)
     {
@@ -175,6 +184,9 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
         initFlags = success == IPL_STATUS_SUCCESS ? static_cast<InitFlags>(initFlags | INIT_AUDIOBUFFERS) : initFlags;
     }
+else {
+    std::cout << "CHANNEL COUNT IS 0 in or out" << std::endl;
+}
 
     return initFlags;
 }

@@ -1003,7 +1003,9 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
     auto effect = reinterpret_cast<State*>(state->plugindata);
 
     auto sourceCoordinates = calcCoordinates(effect->source.absolute);
+    std::cout << "sourceCoordinates: " << sourceCoordinates.origin.x << ", " << sourceCoordinates.origin.y << ", " << sourceCoordinates.origin.z << std::endl;
     auto listenerCoordinates = calcListenerCoordinates(state);
+    std::cout << "listenerCoordinates: " << listenerCoordinates.origin.x << ", " << listenerCoordinates.origin.y << ", " << listenerCoordinates.origin.z << std::endl;
 
     if (operation == FMOD_DSP_PROCESS_QUERY)
     {
@@ -1041,7 +1043,10 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         // TODO: if nothing is initialized, do some fallback processing (passthrough, panning, or something like that).
         auto initFlags = lazyInit(state, numChannelsIn, numChannelsOut);
         if (!(initFlags & INIT_DIRECTAUDIOBUFFERS) || !(initFlags & INIT_BINAURALEFFECT) || !(initFlags & INIT_DIRECTEFFECT))
+        {
+            std::cout << "init failed, outputting silence" << std::endl;
             return FMOD_ERR_DSP_SILENCE;
+        }
 
         if (gNewHRTFWritten)
         {
@@ -1060,7 +1065,10 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         }
 
         auto sourcePosition = sourceCoordinates.origin;
+        std::cout << "sourcePosition: " << sourcePosition.x << ", " << sourcePosition.y << ", " << sourcePosition.z << std::endl;
+
         auto direction = iplCalculateRelativeDirection(gContext, sourcePosition, listenerCoordinates.origin, listenerCoordinates.ahead, listenerCoordinates.up);
+        std::cout << "direction: " << direction.x << ", " << direction.y << ", " << direction.z << std::endl;
 
         iplAudioBufferDeinterleave(gContext, in, &effect->inBuffer);
 
@@ -1071,6 +1079,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         bool directBinaural = numChannelsOut == 2 && effect->directBinaural && !gHRTFDisabled;
         if (directBinaural)
         {
+            std::cout << "directBinaural" << std::endl;
             IPLBinauralEffectParams binauralParams{};
             binauralParams.direction = direction;
             binauralParams.interpolation = effect->hrtfInterpolation;
@@ -1081,6 +1090,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         }
         else
         {
+            std::cout << "!directbinaural" << std::endl;
             iplAudioBufferDownmix(gContext, &effect->directBuffer, &effect->monoBuffer);
 
             IPLPanningEffectParams panningParams{};
@@ -1097,12 +1107,14 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
 
         if (effect->simulationSource[0])
         {
+            std::cout << "simulationSource[0]" << std::endl;
             IPLSimulationOutputs simulationOutputs{};
             iplSourceGetOutputs(effect->simulationSource[0], static_cast<IPLSimulationFlags>(IPL_SIMULATIONFLAGS_REFLECTIONS | IPL_SIMULATIONFLAGS_PATHING), &simulationOutputs);
 
             if (effect->applyReflections &&
                 (initFlags & INIT_REFLECTIONAUDIOBUFFERS) && (initFlags & INIT_REFLECTIONEFFECT) && (initFlags && INIT_AMBISONICSEFFECT))
             {
+                std::cout << "applyReflections" << std::endl;
                 iplAudioBufferDownmix(gContext, &effect->inBuffer, &effect->monoBuffer);
 
                 applyVolumeRamp(effect->prevReflectionsMixLevel, effect->reflectionsMixLevel, frameSize, effect->monoBuffer.data[0]);
@@ -1116,6 +1128,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
 
                 if (gNewReflectionMixerWritten)
                 {
+                    std::cout << "newReflectionMixerWritten" << std::endl;
                     iplReflectionMixerRelease(&gReflectionMixer[0]);
                     gReflectionMixer[0] = iplReflectionMixerRetain(gReflectionMixer[1]);
 
@@ -1126,6 +1139,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
 
                 if (gSimulationSettings.reflectionType != IPL_REFLECTIONEFFECTTYPE_TAN && !gReflectionMixer[0])
                 {
+                    std::cout << "no reflection mixer" << std::endl;
                     IPLAmbisonicsDecodeEffectParams ambisonicsParams;
                     ambisonicsParams.order = gSimulationSettings.maxOrder;
                     ambisonicsParams.hrtf = gHRTF[0];
@@ -1141,6 +1155,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
             if (effect->applyPathing &&
                 (initFlags & INIT_REFLECTIONAUDIOBUFFERS) && (initFlags & INIT_PATHEFFECT) && (initFlags && INIT_AMBISONICSEFFECT))
             {
+                std::cout << "applyPathing" << std::endl;
                 iplAudioBufferDownmix(gContext, &effect->inBuffer, &effect->monoBuffer);
 
                 applyVolumeRamp(effect->prevPathingMixLevel, effect->pathingMixLevel, frameSize, effect->monoBuffer.data[0]);
