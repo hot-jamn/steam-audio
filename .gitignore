@@ -20,3 +20,4 @@ unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/**/*.bundle
 /core/dist
 core/deps/*
 .vs
+.idea/
