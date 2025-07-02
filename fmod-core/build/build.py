@@ -561,11 +561,17 @@ try:
         print("Building project...")
         cmake_build(args)
         print("Build completed successfully!")
+        print("Installing artifacts...")
+        cmake_install(args)
+        print("Installation completed successfully!")
     elif args.operation == 'install':
         print("Installing project...")
         cmake_install(args)
         print("Installation completed successfully!")
     elif args.operation == 'package':
+        print("Installing artifacts...")
+        cmake_install(args)
+        print("Installation completed successfully!")
         print("Creating package...")
         cmake_package(args)
         print("Package created successfully!")
@@ -576,6 +582,9 @@ try:
         print("Building project...")
         cmake_build(args)
         print("Build completed successfully!")
+        print("Installing artifacts...")
+        cmake_install(args)
+        print("Installation completed successfully!")
     elif args.operation == 'ci_build':
         print("Running CI build (generate + build + install)...")
         cmake_generate(args)
@@ -585,9 +594,13 @@ try:
         cmake_install(args)
         print("Installation completed successfully!")
     elif args.operation == 'ci_package':
-        print("Running CI package (generate + package)...")
+        print("Running CI package (generate + build + install + package)...")
         cmake_generate(args)
         print("Build files generated successfully!")
+        cmake_build(args)
+        print("Build completed successfully!")
+        cmake_install(args)
+        print("Installation completed successfully!")
         cmake_package(args)
         print("Package created successfully!")
 
