@@ -221,6 +221,7 @@ if(MSVC)
         /Zc:__cplusplus        # Enable correct __cplusplus macro
         /MP                     # Multi-processor compilation
         /wd4201                 # Disable warning C4201: nonstandard extension used: nameless struct/union (Unity headers)
+        /wd4100                 # Disable warning C4100: unreferenced parameter (Unity interface parameters)
     )
     
     # Enhanced optimizations for release builds
@@ -254,7 +255,7 @@ endif()
 if (BUILD_SHARED_LIBS AND IPL_OS_MACOS)
     if(MSVC)
         target_compile_options(phonon_fmodcore_enhanced_bundle PRIVATE
-            /W4 /WX /permissive- /Zc:__cplusplus /MP /wd4201
+            /W4 /WX /permissive- /Zc:__cplusplus /MP /wd4201 /wd4100
             $<$<CONFIG:Release>:/O2 /Ob2 /DNDEBUG>
             $<$<CONFIG:RelWithDebInfo>:/O2 /Ob1 /Zi>
             $<$<CONFIG:Debug>:/Od /Zi /RTC1>
