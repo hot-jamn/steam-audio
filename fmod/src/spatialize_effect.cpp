@@ -39,6 +39,7 @@ namespace SpatializeEffect {
 
     // Thread-safe print function
     inline void PRINT(const std::string& msg) {
+        msg = "SpatializeEffect: " + msg;
         std::wstring ws(msg.begin(), msg.end());
         OutputDebugStringW(ws.c_str());
     }
@@ -211,6 +212,8 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
                    int numChannelsOut)
 {
     auto initFlags = INIT_NONE;
+
+    PRINT("init")
 
     IPLAudioSettings audioSettings;
     state->functions->getsamplerate(state, &audioSettings.samplingRate);
