@@ -212,7 +212,7 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 {
     auto initFlags = INIT_NONE;
 
-    PRINT("init")
+    PRINT("init");
 
     IPLAudioSettings audioSettings;
     state->functions->getsamplerate(state, &audioSettings.samplingRate);
