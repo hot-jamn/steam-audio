@@ -39,7 +39,8 @@ namespace SpatializeEffect {
 
     // Thread-safe print function
     inline void PRINT(const std::string& msg) {
-        OutputDebugString(msg.c_str());
+        std::wstring ws(msg.begin(), msg.end());
+        OutputDebugStringW(ws.c_str());
     }
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
