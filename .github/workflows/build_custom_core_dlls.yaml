@@ -1,0 +1,46 @@
+name: Build FMOD-Core Debug DLLs
+
+on:
+  push:
+    paths:
+      - 'fmod-core/**'
+    branches:
+      - main
+      - master
+
+jobs:
+  build-fmod-core-debug-dll:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Prepare Repository
+      working-directory: fmod-core
+      run: |
+        python setup.py
+
+    - name: Build Debug DLL (Enhanced and Original)
+      working-directory: fmod-core/
+      run: |
+        python build/build.py -c debug -p windows -o generate --enhanced --original --enable-profiling --enable-error-recovery
+        python build.build.py -c debug -p windows -o build --enhanced --original --enable-profiling --enable-error-recovery
+
+    - name: Upload built DLLs as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: phonon-fmod-core-debug-dll
+        path: fmod-core/bin/**
