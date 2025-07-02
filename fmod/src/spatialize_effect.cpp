@@ -29,6 +29,7 @@
 #include <fstream>
 #include <mutex>
 #include <format>
+#include <Windows.h>
 
 namespace SteamAudioFMOD {
 
@@ -36,23 +37,9 @@ extern std::shared_ptr<SourceManager> gSourceManager;
 
 namespace SpatializeEffect {
 
-    // Log file path (customize as needed)
-    constexpr const char* SPATIALIZE_EFFECT_LOG_FILE = "C:\\Users\\me\\Desktop\\spatialize_effect_log.txt";
-
     // Thread-safe print function
     inline void PRINT(const std::string& msg) {
-        static std::mutex print_mutex;
-        std::lock_guard<std::mutex> lock(print_mutex);
-        std::ofstream log(SPATIALIZE_EFFECT_LOG_FILE, std::ios::app);
-        if (log.is_open()) {
-            log << msg << std::endl;
-        }
-    }
-
-    // Overload for std::format style usage, so you can PRINT(std::format(...))
-    template <typename... Args>
-    inline void PRINT(const std::format_string<Args...> fmt, Args&&... args) {
-        PRINT(std::format(fmt, std::forward<Args>(args)...));
+        OutputDebugString(msg.c_str());
     }
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
