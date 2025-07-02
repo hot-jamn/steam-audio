@@ -62,4 +62,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: phonon-unity-dll
-        path: fmod-core/bin/**
+        path: unity/bin/**
