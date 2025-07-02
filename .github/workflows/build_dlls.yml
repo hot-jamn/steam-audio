@@ -6,6 +6,7 @@ on:
       - 'fmod/**'
     branches:
       - main
+      - master
 
 jobs:
   build-debug-dll:
