@@ -38,10 +38,10 @@ jobs:
       run: |
         python build.py -c debug -p windows -o generate
         python build.py -c debug -p windows -o build
-    
+
     - name: Move Up
-    - working-directory: fmod
-    - run: |
+      working-directory: fmod
+      run: |
         python --version
 
     - name: Upload built DLLs as artifact
