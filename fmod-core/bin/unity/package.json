@@ -1,0 +1,40 @@
+{
+  "name": "com.valvesoftware.steamaudio.fmodcore",
+  "displayName": "Steam Audio FMOD Core Integration",
+  "version": "4.5.3",
+  "description": "Unity integration for Steam Audio with FMOD Core API. Provides spatial audio processing using Unity's probe-based workflow with FMOD Core runtime audio engine.",
+  "unity": "2019.4",
+  "keywords": [
+    "audio",
+    "spatial",
+    "3d",
+    "fmod",
+    "steam",
+    "valve",
+    "spatialization",
+    "reverb",
+    "occlusion",
+    "hrtf"
+  ],
+  "author": {
+    "name": "Valve Corporation",
+    "email": "steamaudio@valvesoftware.com",
+    "url": "https://valvesoftware.github.io/steam-audio/"
+  },
+  "dependencies": {
+    "com.valvesoftware.steamaudio": "4.5.3"
+  },
+  "samples": [
+    {
+      "displayName": "FMOD Core Integration Examples",
+      "description": "Example scenes and scripts demonstrating Steam Audio FMOD Core integration",
+      "path": "Samples~/Examples"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ValveSoftware/steam-audio.git",
+    "directory": "fmod-core/unity"
+  },
+  "license": "Apache-2.0"
+}
