@@ -15,6 +15,7 @@
 //
 
 #include "steamaudio_fmod.h"
+#include <iostream>
 
 namespace SteamAudioFMOD {
 
