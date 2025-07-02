@@ -392,15 +392,6 @@ install(
     COMPONENT   fmod_core_enhanced_dev
 )
 
-# Install Unity integration artifacts
-install(
-    FILES
-        ../unity/steamaudio_unity_fmodcore.h
-        ../unity/steamaudio_unity_fmodcore.cpp
-    DESTINATION unity/Native
-    COMPONENT   fmod_core_unity
-)
-
 # Install Unity C# integration files
 install(FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/../unity/SteamAudioFMODCore.cs"
