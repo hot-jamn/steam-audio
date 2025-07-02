@@ -46,6 +46,11 @@ jobs:
         name: phonon-fmod-core-debug-dll
         path: fmod-core/bin/**
 
+    - name: Prepare Repository
+      working-directory: unity
+      run: |
+        python setup.py
+
     - name: Build Unity DLL
       working-directory: unity/
       run: |
