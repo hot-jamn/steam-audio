@@ -243,8 +243,8 @@ set(SRC_FMODCORE_CORE
     src/library.cpp
     src/steamaudio_fmodcore.h
     src/steamaudio_fmodcore.cpp
-    unity/steamaudio_unity_fmodcore.h
-    unity/steamaudio_unity_fmodcore.cpp
+    src/steamaudio_unity_fmodcore.h
+    src/steamaudio_unity_fmodcore.cpp
 )
 
 # Original implementation

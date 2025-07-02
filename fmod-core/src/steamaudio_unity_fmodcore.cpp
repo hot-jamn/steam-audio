@@ -280,4 +280,41 @@ UNITY_AUDIODSP_EXPORT_API int UnityGetAudioEffectDefinitions(UnityAudioEffectDef
     return sizeof(effectDefinitions) / sizeof(effectDefinitions[0]);
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+// Unity C# Integration API
+// --------------------------------------------------------------------------------------------------------------------
+
+UNITY_AUDIODSP_EXPORT_API void iplUnitySetContext(IPLContext context)
+{
+    SteamAudioUnityFMODCore::shareUnityContextWithFMODCore(context);
+}
+
+UNITY_AUDIODSP_EXPORT_API void iplUnitySetHRTF(IPLHRTF hrtf)
+{
+    // HRTF is typically managed by the main Steam Audio context
+    // This is a placeholder for future HRTF sharing functionality
+    // For now, HRTF sharing happens through the shared context
+}
+
+UNITY_AUDIODSP_EXPORT_API void iplUnitySetSimulationSettings(IPLSimulationSettings simulationSettings)
+{
+    // Simulation settings are typically managed by the main Steam Audio context
+    // This is a placeholder for future simulation settings sharing functionality
+    // For now, settings sharing happens through the shared context
+}
+
+UNITY_AUDIODSP_EXPORT_API int iplUnityAddSource(IPLSource source)
+{
+    // Source management is typically handled by the main Steam Audio system
+    // This is a placeholder for future source sharing functionality
+    // Return a dummy source ID for now
+    return 0;
+}
+
+UNITY_AUDIODSP_EXPORT_API void iplUnityRemoveSource(int sourceId)
+{
+    // Source management is typically handled by the main Steam Audio system
+    // This is a placeholder for future source sharing functionality
+}
+
 }

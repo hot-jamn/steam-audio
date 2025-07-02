@@ -33,8 +33,8 @@ set(SRC_FMODCORE_CORE
     library.cpp
     steamaudio_fmodcore.h
     steamaudio_fmodcore.cpp
-    ../unity/steamaudio_unity_fmodcore.h
-    ../unity/steamaudio_unity_fmodcore.cpp
+    steamaudio_unity_fmodcore.h
+    steamaudio_unity_fmodcore.cpp
 )
 
 # Original effect implementations
