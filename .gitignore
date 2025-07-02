@@ -21,3 +21,4 @@ unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/**/*.bundle
 core/deps/*
 .vs
 .idea/
+fmod-core/windows-vs2022-x64/*

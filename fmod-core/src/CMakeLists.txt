@@ -384,12 +384,49 @@ endif()
 
 # Install enhanced headers for development
 install(
-    FILES       
+    FILES
         performance_monitor.h
         error_handling.h
         steamaudio_fmodcore.h
     DESTINATION include/SteamAudio/fmod-core
     COMPONENT   fmod_core_enhanced_dev
+)
+
+# Install Unity integration artifacts
+install(
+    FILES
+        ../unity/steamaudio_unity_fmodcore.h
+        ../unity/steamaudio_unity_fmodcore.cpp
+    DESTINATION unity/Native
+    COMPONENT   fmod_core_unity
+)
+
+# Install Unity C# integration files
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/SteamAudioFMODCore.cs"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/SteamAudioFMODCoreSource.cs"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/SteamAudioFMODCoreManager.cs"
+    DESTINATION "unity/Scripts/Runtime"
+    COMPONENT fmod_core_unity
+)
+
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/Editor/SteamAudioFMODCoreEditor.cs"
+    DESTINATION "unity/Scripts/Editor"
+    COMPONENT fmod_core_unity
+)
+
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/Examples/SteamAudioFMODCoreExample.cs"
+    DESTINATION "unity/Examples"
+    COMPONENT fmod_core_unity
+)
+
+install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/README.md"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../unity/package.json"
+    DESTINATION "unity"
+    COMPONENT fmod_core_unity
 )
 
 # Install documentation
