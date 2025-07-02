@@ -40,9 +40,9 @@ jobs:
         python build.py -c debug -p windows -o build
     
     - name: Move Up
+    - working-directory: fmod
     - run: |
-        cd ..
-        cd ..
+        python --version
 
     - name: Upload built DLLs as artifact
       uses: actions/upload-artifact@v4
