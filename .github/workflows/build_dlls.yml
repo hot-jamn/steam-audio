@@ -38,6 +38,11 @@ jobs:
       run: |
         python build.py -c debug -p windows -o generate
         python build.py -c debug -p windows -o build
+    
+    - name: Move Up
+    - run: |
+        cd ..
+        cd ..
 
     - name: Upload built DLLs as artifact
       uses: actions/upload-artifact@v4
