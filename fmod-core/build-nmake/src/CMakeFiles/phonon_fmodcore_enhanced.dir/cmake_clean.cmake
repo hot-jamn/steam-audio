@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/__/unity/steamaudio_unity_fmodcore.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/__/unity/steamaudio_unity_fmodcore.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/cmake_pch.cxx.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/cmake_pch.cxx.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/error_handling.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/error_handling.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/library.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/library.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/mix_return_effect.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/mix_return_effect.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/mix_return_effect_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/mix_return_effect_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/phonon_fmodcore.rc.res"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/plugin_list.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/plugin_list.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/plugin_list_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/plugin_list_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/reverb_effect.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/reverb_effect.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/reverb_effect_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/reverb_effect_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/spatialize_effect.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/spatialize_effect.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/spatialize_effect_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/spatialize_effect_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/steamaudio_fmodcore.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/steamaudio_fmodcore.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/steamaudio_fmodcore_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/steamaudio_fmodcore_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore_enhanced.dir/cmake_pch.cxx.pch"
+  "phonon_fmodcore_enhanced.dll"
+  "phonon_fmodcore_enhanced.dll.manifest"
+  "phonon_fmodcore_enhanced.lib"
+  "phonon_fmodcore_enhanced.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX RC)
+  include(CMakeFiles/phonon_fmodcore_enhanced.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

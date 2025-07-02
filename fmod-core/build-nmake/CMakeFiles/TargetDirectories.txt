@@ -1,0 +1,16 @@
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/phonon_fmodcore.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/package.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/package_source.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/edit_cache.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/rebuild_cache.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/list_install_components.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/install.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/CMakeFiles/install/local.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/phonon_fmodcore_enhanced.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/package.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/package_source.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/edit_cache.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/rebuild_cache.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/list_install_components.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/install.dir
+D:/hot-jamn/steam-audio/fmod-core/build-nmake/src/CMakeFiles/install/local.dir
