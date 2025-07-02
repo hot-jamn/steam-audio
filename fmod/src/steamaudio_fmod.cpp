@@ -316,7 +316,7 @@ SourceManager::~SourceManager()
 
 int32_t SourceManager::addSource(IPLSource source)
 {
-	PRINT(std::format("Adding source {}", source);
+	PRINT("Adding source");
     // Retain a reference to this source.
     auto sourceRetained = iplSourceRetain(source);
 
