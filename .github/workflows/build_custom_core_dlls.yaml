@@ -46,20 +46,3 @@ jobs:
       with:
         name: phonon-fmod-core-debug-dll
         path: fmod-core/bin/**
-
-    - name: Prepare Repository
-      working-directory: unity
-      run: |
-        python setup.py
-
-    - name: Build Unity DLL
-      working-directory: unity/
-      run: |
-        python build/build.py -c debug -p windows -o generate 
-        python build/build.py -c debug -p windows -o build 
-
-    - name: Upload built DLLs as artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: phonon-unity-dll
-        path: unity/bin/**
