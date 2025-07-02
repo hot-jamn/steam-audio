@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/phonon_fmodcore.dir/cmake_pch.cxx.obj"
+  "CMakeFiles/phonon_fmodcore.dir/cmake_pch.cxx.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/phonon_fmodcore.rc.res"
+  "CMakeFiles/phonon_fmodcore.dir/src/error_handling.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/error_handling.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/library.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/library.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/mix_return_effect.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/mix_return_effect.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/mix_return_effect_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/mix_return_effect_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/plugin_list.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/plugin_list.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/plugin_list_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/plugin_list_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/reverb_effect.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/reverb_effect.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/reverb_effect_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/reverb_effect_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/spatialize_effect.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/spatialize_effect.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/spatialize_effect_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/spatialize_effect_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/steamaudio_fmodcore.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/steamaudio_fmodcore.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/src/steamaudio_fmodcore_enhanced.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/src/steamaudio_fmodcore_enhanced.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/unity/steamaudio_unity_fmodcore.cpp.obj"
+  "CMakeFiles/phonon_fmodcore.dir/unity/steamaudio_unity_fmodcore.cpp.obj.d"
+  "CMakeFiles/phonon_fmodcore.dir/cmake_pch.cxx.pch"
+  "phonon_fmodcore.dll"
+  "phonon_fmodcore.dll.manifest"
+  "phonon_fmodcore.lib"
+  "phonon_fmodcore.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX RC)
+  include(CMakeFiles/phonon_fmodcore.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

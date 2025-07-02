@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'fmod-core/**'
+      - 'unity/**'
+      - '.github/workflows/build_custom_core_dlls.yaml'
     branches:
       - main
       - master
@@ -33,7 +35,7 @@ jobs:
       run: |
         python setup.py
 
-    - name: Build Debug DLL (Enhanced and Original)
+    - name: Build Core DLL (Enhanced and Original)
       working-directory: fmod-core/
       run: |
         python build/build.py -c debug -p windows -o generate --enhanced --original --enable-profiling --enable-error-recovery
