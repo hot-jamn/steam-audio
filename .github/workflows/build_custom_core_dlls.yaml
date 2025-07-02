@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'fmod-core/**'
+      - 'unity/**'
     branches:
       - main
       - master
@@ -33,7 +34,7 @@ jobs:
       run: |
         python setup.py
 
-    - name: Build Debug DLL (Enhanced and Original)
+    - name: Build Core DLL (Enhanced and Original)
       working-directory: fmod-core/
       run: |
         python build/build.py -c debug -p windows -o generate --enhanced --original --enable-profiling --enable-error-recovery
@@ -43,4 +44,16 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: phonon-fmod-core-debug-dll
+        path: fmod-core/bin/**
+
+    - name: Build Unity DLL
+      working-directory: unity/
+      run: |
+        python build/build.py -c debug -p windows -o generate --enhanced --original --enable-profiling --enable-error-recovery
+        python build/build.py -c debug -p windows -o build --enhanced --original --enable-profiling --enable-error-recovery
+
+    - name: Upload built DLLs as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: phonon-unity-dll
         path: fmod-core/bin/**
