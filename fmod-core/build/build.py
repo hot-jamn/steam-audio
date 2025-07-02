@@ -18,7 +18,7 @@ import re
 import subprocess
 import sys
 
-# Ensure stdout uses UTF-8 encoding (Python 3.7+)
+# Ensure stdout uses UTF-8 encoding (Python >3.7)
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding='utf-8')
 
