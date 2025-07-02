@@ -1,0 +1,51 @@
+name: Build FMOD Debug DLLs
+
+on:
+  push:
+    paths:
+      - 'fmod/**'
+    branches:
+      - main
+      - master
+
+jobs:
+  build-debug-dll:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Prepare Repository
+      working-directory: fmod
+      run: |
+        python setup.py
+
+    - name: Build Debug DLL
+      working-directory: fmod/build
+      run: |
+        python build.py -c debug -p windows -o generate
+        python build.py -c debug -p windows -o build
+    
+    - name: Move Up
+    - run: |
+        cd ..
+        cd ..
+
+    - name: Upload built DLLs as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: phonon-fmod-debug-dll
+        path: fmod/bin/**
