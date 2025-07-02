@@ -37,12 +37,11 @@ extern std::shared_ptr<SourceManager> gSourceManager;
 
 namespace SpatializeEffect {
 
-    // Thread-safe print function
-    inline void PRINT(const std::string& msg) {
-        msg = std::format("SpatializeEffect: {}", msg);
-        std::wstring ws(msg.begin(), msg.end());
-        OutputDebugStringW(ws.c_str());
-    }
+   inline void PRINT(const std::string& msg) {
+    auto formatted = std::format("SpatializeEffect: {}", msg);
+    std::wstring ws(formatted.begin(), formatted.end());
+    OutputDebugStringW(ws.c_str());
+}
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
     { FMOD_DSP_PARAMETER_TYPE_DATA, "SourcePos", "", "Position of the source." },
