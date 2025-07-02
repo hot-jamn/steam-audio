@@ -33,6 +33,8 @@ set(SRC_FMODCORE_CORE
     library.cpp
     steamaudio_fmodcore.h
     steamaudio_fmodcore.cpp
+    ../unity/steamaudio_unity_fmodcore.h
+    ../unity/steamaudio_unity_fmodcore.cpp
 )
 
 # Original effect implementations
@@ -212,12 +214,13 @@ endif()
 
 # Enable enhanced warnings and optimizations
 if(MSVC)
-    target_compile_options(phonon_fmodcore_enhanced PRIVATE 
+    target_compile_options(phonon_fmodcore_enhanced PRIVATE
         /W4                     # High warning level
         /WX                     # Treat warnings as errors
         /permissive-           # Disable non-conforming code
         /Zc:__cplusplus        # Enable correct __cplusplus macro
         /MP                     # Multi-processor compilation
+        /wd4201                 # Disable warning C4201: nonstandard extension used: nameless struct/union (Unity headers)
     )
     
     # Enhanced optimizations for release builds
@@ -250,8 +253,8 @@ endif()
 # Apply same settings to bundle target on macOS
 if (BUILD_SHARED_LIBS AND IPL_OS_MACOS)
     if(MSVC)
-        target_compile_options(phonon_fmodcore_enhanced_bundle PRIVATE 
-            /W4 /WX /permissive- /Zc:__cplusplus /MP
+        target_compile_options(phonon_fmodcore_enhanced_bundle PRIVATE
+            /W4 /WX /permissive- /Zc:__cplusplus /MP /wd4201
             $<$<CONFIG:Release>:/O2 /Ob2 /DNDEBUG>
             $<$<CONFIG:RelWithDebInfo>:/O2 /Ob1 /Zi>
             $<$<CONFIG:Debug>:/Od /Zi /RTC1>
