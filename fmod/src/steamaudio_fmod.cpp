@@ -24,6 +24,12 @@
 #define STEAMAUDIO_SKIP_API_FUNCTIONS
 #endif
 #include <phonon_interfaces.h>
+#include <fstream>
+#include <mutex>
+#include <format>
+#include <Windows.h>
+#include <iostream>
+#include <format>
 
 
 namespace SteamAudioFMOD {
@@ -46,6 +52,12 @@ std::atomic<bool> gHRTFDisabled{ false };
 
 std::shared_ptr<SourceManager> gSourceManager;
 
+
+inline void PRINT(const std::string& msg) {
+    auto formatted = std::format("STEAMFMOD: {}", msg);
+    std::wstring ws(formatted.begin(), formatted.end());
+    OutputDebugStringW(ws.c_str());
+}
 
 // --------------------------------------------------------------------------------------------------------------------
 // Helper Functions
@@ -177,6 +189,7 @@ bool isRunningInEditor()
 
 void initContextAndDefaultHRTF(IPLAudioSettings audioSettings)
 {
+    PRINT("Init context");
     IPLContextSettings contextSettings{};
     contextSettings.version = STEAMAUDIO_VERSION;
     contextSettings.simdLevel = IPL_SIMDLEVEL_AVX2;
@@ -303,6 +316,7 @@ SourceManager::~SourceManager()
 
 int32_t SourceManager::addSource(IPLSource source)
 {
+	PRINT("Adding source");
     // Retain a reference to this source.
     auto sourceRetained = iplSourceRetain(source);
 
@@ -435,6 +449,7 @@ void F_CALL iplFMODGetVersion(unsigned int* major,
 
 void F_CALL iplFMODInitialize(IPLContext context)
 {
+    PRINT("Initializing");
     assert(gContext == nullptr);
 
     gContext = iplContextRetain(context);
@@ -444,6 +459,7 @@ void F_CALL iplFMODInitialize(IPLContext context)
 
 void F_CALL iplFMODTerminate()
 {
+	PRINT("Terminating");
     gNewReflectionMixerWritten = false;
     iplReflectionMixerRelease(&gReflectionMixer[0]);
     iplReflectionMixerRelease(&gReflectionMixer[1]);
@@ -465,6 +481,7 @@ void F_CALL iplFMODTerminate()
 
 void F_CALL iplFMODSetHRTF(IPLHRTF hrtf)
 {
+	PRINT("Setting HRTF");
     if (hrtf == gHRTF[1])
         return;
 
@@ -479,6 +496,7 @@ void F_CALL iplFMODSetHRTF(IPLHRTF hrtf)
 
 void F_CALL iplFMODSetSimulationSettings(IPLSimulationSettings simulationSettings)
 {
+	PRINT("Setting simulation settings");
     gSimulationSettings = simulationSettings;
 
     gIsSimulationSettingsValid = true;

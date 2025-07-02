@@ -23,8 +23,13 @@
 #include <algorithm>
 #include <atomic>
 #include <iostream>
+#include <format>
 
 #include "steamaudio_fmod.h"
+#include <fstream>
+#include <mutex>
+#include <format>
+#include <Windows.h>
 
 namespace SteamAudioFMOD {
 
@@ -32,30 +37,11 @@ extern std::shared_ptr<SourceManager> gSourceManager;
 
 namespace SpatializeEffect {
 
-
-
-    //holding the unity log ptr until plugin unloads
-    static IUnityLog* unityLogPtr = nullptr;
-
-    #define FORMAT(MESSAGE) std::string("[" + std::string(__FILE__) + ":" + std::to_string(__LINE__) + "] " + MESSAGE).c_str()
-    #define DEBUG_LOG(PTR, MESSAGE) UNITY_LOG(PTR, FORMAT(MESSAGE))
-    #define DEBUG_WARNING(PTR, MESSAGE) UNITY_LOG_WARNING(PTR, FORMAT(MESSAGE))
-    #define DEBUG_ERROR(PTR, MESSAGE) UNITY_LOG_ERROR(PTR, FORMAT(MESSAGE))
-
-    extern "C"
-    {
-        UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfacesPtr)
-        {
-            //Get the unity log pointer once the Unity plugin gets loaded
-            unityLogPtr = unityInterfacesPtr->Get<IUnityLog>();
-        }
-
-        UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginUnload()
-        {
-            //Clearing the log ptr on unloading the plugin
-            unityLogPtr = nullptr;
-        }
-    }
+   inline void PRINT(const std::string& msg) {
+    auto formatted = std::format("SpatializeEffect: {}", msg);
+    std::wstring ws(formatted.begin(), formatted.end());
+    OutputDebugStringW(ws.c_str());
+}
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
     { FMOD_DSP_PARAMETER_TYPE_DATA, "SourcePos", "", "Position of the source." },
@@ -225,6 +211,8 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
                    int numChannelsOut)
 {
     auto initFlags = INIT_NONE;
+
+    PRINT("init");
 
     IPLAudioSettings audioSettings;
     state->functions->getsamplerate(state, &audioSettings.samplingRate);
@@ -1032,9 +1020,9 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
     auto effect = reinterpret_cast<State*>(state->plugindata);
 
     auto sourceCoordinates = calcCoordinates(effect->source.absolute);
-    DEBUG_LOG(unityLogPtr, std::format("Spatialize: source coordinates: ({}, {}, {})", sourceCoordinates.origin.x, sourceCoordinates.origin.y, sourceCoordinates.origin.z));
+    PRINT(std::format("Spatialize: source coordinates: ({}, {}, {})", sourceCoordinates.origin.x, sourceCoordinates.origin.y, sourceCoordinates.origin.z));
     auto listenerCoordinates = calcListenerCoordinates(state);
-    DEBUG_LOG(unityLogPtr, std::format("Spatialize: listener coordinates: ({}, {}, {})", listenerCoordinates.origin.x, listenerCoordinates.origin.y, listenerCoordinates.origin.z));
+    PRINT(std::format("Spatialize: listener coordinates: ({}, {}, {})", listenerCoordinates.origin.x, listenerCoordinates.origin.y, listenerCoordinates.origin.z));
 
     if (operation == FMOD_DSP_PROCESS_QUERY)
     {
@@ -1073,7 +1061,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         auto initFlags = lazyInit(state, numChannelsIn, numChannelsOut);
         if (!(initFlags & INIT_DIRECTAUDIOBUFFERS) || !(initFlags & INIT_BINAURALEFFECT) || !(initFlags & INIT_DIRECTEFFECT))
         {
-            DEBUG_LOG(unityLogPtr, "Spatialize: failed to initialize audio processing state");
+            PRINT("Spatialize: failed to initialize audio processing state");
             return FMOD_ERR_DSP_SILENCE;
         }
 
@@ -1094,10 +1082,10 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         }
 
         auto sourcePosition = sourceCoordinates.origin;
-        DEBUG_LOG(unityLogPtr, std::format("Spatialize: source position: ({}, {}, {})", sourcePosition.x, sourcePosition.y, sourcePosition.z));
+        PRINT(std::format("Spatialize: source position: ({}, {}, {})", sourcePosition.x, sourcePosition.y, sourcePosition.z));
 
         auto direction = iplCalculateRelativeDirection(gContext, sourcePosition, listenerCoordinates.origin, listenerCoordinates.ahead, listenerCoordinates.up);
-        DEBUG_LOG(unityLogPtr, std::format("Spatialize: direction: ({}, {}, {})", direction.x, direction.y, direction.z));
+        PRINT(std::format("Spatialize: direction: ({}, {}, {})", direction.x, direction.y, direction.z));
 
         iplAudioBufferDeinterleave(gContext, in, &effect->inBuffer);
 
@@ -1108,7 +1096,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         bool directBinaural = numChannelsOut == 2 && effect->directBinaural && !gHRTFDisabled;
         if (directBinaural)
         {
-            DEBUG_LOG(unityLogPtr, "Spatialize: applying direct binaural");
+            PRINT("Spatialize: applying direct binaural");
             IPLBinauralEffectParams binauralParams{};
             binauralParams.direction = direction;
             binauralParams.interpolation = effect->hrtfInterpolation;
@@ -1119,7 +1107,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
         }
         else
         {
-            DEBUG_LOG(unityLogPtr, "Spatialize: applying direct");
+            PRINT("Spatialize: applying direct");
             iplAudioBufferDownmix(gContext, &effect->directBuffer, &effect->monoBuffer);
 
             IPLPanningEffectParams panningParams{};
@@ -1136,14 +1124,14 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
 
         if (effect->simulationSource[0])
         {
-            DEBUG_LOG(unityLogPtr, "Spatialize: applying simulation");
+            PRINT("Spatialize: applying simulation");
             IPLSimulationOutputs simulationOutputs{};
             iplSourceGetOutputs(effect->simulationSource[0], static_cast<IPLSimulationFlags>(IPL_SIMULATIONFLAGS_REFLECTIONS | IPL_SIMULATIONFLAGS_PATHING), &simulationOutputs);
 
             if (effect->applyReflections &&
                 (initFlags & INIT_REFLECTIONAUDIOBUFFERS) && (initFlags & INIT_REFLECTIONEFFECT) && (initFlags && INIT_AMBISONICSEFFECT))
             {
-                DEBUG_LOG(unityLogPtr, "Spatialize: applying reflections");
+                PRINT("Spatialize: applying reflections");
                 iplAudioBufferDownmix(gContext, &effect->inBuffer, &effect->monoBuffer);
 
                 applyVolumeRamp(effect->prevReflectionsMixLevel, effect->reflectionsMixLevel, frameSize, effect->monoBuffer.data[0]);
@@ -1157,7 +1145,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
 
                 if (gNewReflectionMixerWritten)
                 {
-                    DEBUG_LOG(unityLogPtr, "Spatialize: applying new reflection mixer");
+                    PRINT("Spatialize: applying new reflection mixer");
                     iplReflectionMixerRelease(&gReflectionMixer[0]);
                     gReflectionMixer[0] = iplReflectionMixerRetain(gReflectionMixer[1]);
 
@@ -1168,7 +1156,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
 
                 if (gSimulationSettings.reflectionType != IPL_REFLECTIONEFFECTTYPE_TAN && !gReflectionMixer[0])
                 {
-                    DEBUG_LOG(unityLogPtr, "Spatialize: applying ambisonic seamless");
+                    PRINT("Spatialize: applying ambisonic seamless");
                     IPLAmbisonicsDecodeEffectParams ambisonicsParams;
                     ambisonicsParams.order = gSimulationSettings.maxOrder;
                     ambisonicsParams.hrtf = gHRTF[0];
@@ -1184,7 +1172,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
             if (effect->applyPathing &&
                 (initFlags & INIT_REFLECTIONAUDIOBUFFERS) && (initFlags & INIT_PATHEFFECT) && (initFlags && INIT_AMBISONICSEFFECT))
             {
-                DEBUG_LOG(unityLogPtr, "Spatialize: applying pathing");
+                PRINT("Spatialize: applying pathing");
                 iplAudioBufferDownmix(gContext, &effect->inBuffer, &effect->monoBuffer);
 
                 applyVolumeRamp(effect->prevPathingMixLevel, effect->pathingMixLevel, frameSize, effect->monoBuffer.data[0]);
