@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-debug-dll:
-    runs-on: FmodDllBuildRunner
+    runs-on: windows-latest
 
     defaults:
       run:
