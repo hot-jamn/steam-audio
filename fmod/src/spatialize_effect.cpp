@@ -23,6 +23,7 @@
 #include <algorithm>
 #include <atomic>
 #include <iostream>
+#include <format>
 
 #include "steamaudio_fmod.h"
 
