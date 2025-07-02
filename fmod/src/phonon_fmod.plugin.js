@@ -339,7 +339,7 @@ studio.plugins.registerPluginDescription("Steam Audio Mixer Return", {
 				items: [
 					{
 						deckWidgetType: studio.ui.deckWidgetType.Button,
-						binding: "Binaural",
+						binding: "Binaurallllll",
 						text: "On",
 						buttonWidth: 64
 					},
