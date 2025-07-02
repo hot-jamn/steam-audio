@@ -64,7 +64,7 @@ struct SpatializerEffectState
     bool initialized;
     int currentHRTFIndex;
     int currentReverbSourceIndex;
-    int currentReflectionMixerIndex; 
+    int currentReflectionMixerIndex;
 
     SpatializerEffectState()
         : source(nullptr)

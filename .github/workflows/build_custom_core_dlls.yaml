@@ -5,6 +5,7 @@ on:
     paths:
       - 'fmod-core/**'
       - 'unity/**'
+      - '.github/workflows/build_custom_core_dlls.yaml'
     branches:
       - main
       - master
@@ -54,8 +55,8 @@ jobs:
     - name: Build Unity DLL
       working-directory: unity/
       run: |
-        python build/build.py -c debug -p windows -o generate --enhanced --original --enable-profiling --enable-error-recovery
-        python build/build.py -c debug -p windows -o build --enhanced --original --enable-profiling --enable-error-recovery
+        python build/build.py -c debug -p windows -o generate 
+        python build/build.py -c debug -p windows -o build 
 
     - name: Upload built DLLs as artifact
       uses: actions/upload-artifact@v4
