@@ -18,7 +18,39 @@
 #include "steamaudio_fmodcore.h"
 
 namespace SteamAudioFMODCore {
+    FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+    {
+        initSpatializeParameterDescs();
+        initReverbParameterDescs();
+        initMixerReturnParameterDescs();
+        return gPluginList;
+    }
 
+    FMOD_PLUGINLIST gPluginList[] =
+    {
+        { FMOD_PLUGINTYPE_DSP, &gSpatializeEffect },
+        { FMOD_PLUGINTYPE_DSP, &gReverbEffect },
+        { FMOD_PLUGINTYPE_DSP, &gMixerReturnEffect },
+        { FMOD_PLUGINTYPE_MAX, nullptr }
+    };
+
+    FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription()
+    {
+        initSpatializeParameterDescs();
+        return &gSpatializeEffect;
+    }
+
+    FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription()
+    {
+        initReverbParameterDescs();
+        return &gReverbEffect;
+    }
+
+    FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription()
+    {
+        initMixerReturnParameterDescs();
+        return &gMixerReturnEffect; 
+    }
 
 // --------------------------------------------------------------------------------------------------------------------
 // Plugin List
@@ -28,10 +60,32 @@ extern "C" {
 
 // Plugin list - this is what FMOD will call to get all available plugins
 
+// Alternative entry point for individual plugin loading
+F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetDSPDescription()
+{
+    // Return the spatializer as the default plugin
+    return FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
+}
+
 // Plugin information
 F_EXPORT unsigned int F_CALL FMODGetNumPlugins()
 {
     return 3; // Spatializer, Reverb, MixerReturn
+}
+
+F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetPluginDescription(unsigned int index)
+{
+    switch (index)
+    {
+    case 0:
+        return FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
+    case 1:
+        return FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription();
+    case 2:
+        return FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription();
+    default:
+        return nullptr;
+    }
 }
 
 // Plugin version information

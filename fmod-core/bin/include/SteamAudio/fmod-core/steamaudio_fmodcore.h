@@ -212,7 +212,15 @@ void initMixerReturnParameterDescs();
 // --------------------------------------------------------------------------------------------------------------------
 
 extern "C" {
-/**
+
+
+    F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList();
+
+    F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
+    F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription();
+    F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription();
+    
+    /**
  *  DSP parameters for the "Steam Audio FMOD Core Spatializer" effect.
  */
 typedef enum IPLFMODCoreSpatializerParams
@@ -641,11 +649,6 @@ typedef enum IPLFMODCoreMixerReturnParams
 
 // This function is called by FMOD Core when it loads plugins. It returns metadata that describes all of the
 // effects implemented in this DLL.
-F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList();
-
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription();
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription();
 
 /**
  *  Returns the version of the FMOD Core integration being used.
