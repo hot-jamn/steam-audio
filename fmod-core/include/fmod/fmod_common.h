@@ -82,7 +82,7 @@ typedef unsigned int FMOD_MEMORY_TYPE;
 #define FMOD_MEMORY_PERSISTENT                      0x00200000
 #define FMOD_MEMORY_ALL                             0xFFFFFFFF
 
-typedef unsigned int FMOD_INITFLAGS;ds
+typedef unsigned int FMOD_INITFLAGS;
 #define FMOD_INIT_NORMAL                            0x00000000
 #define FMOD_INIT_STREAM_FROM_UPDATE                0x00000001
 #define FMOD_INIT_MIX_FROM_UPDATE                   0x00000002
