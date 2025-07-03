@@ -57,7 +57,7 @@ typedef unsigned long long         FMOD_PORT_INDEX;
 /*
     FMOD constants
 */
-#define FMOD_VERSION    0x00010604                     /* 0xaaaabbcc -> aaaa = product version, bb = major version, cc = minor version.*/
+#define FMOD_VERSION    0x00020206                     /* 0xaaaabbcc -> aaaa = product version, bb = major version, cc = minor version.*/
 
 typedef unsigned int FMOD_DEBUG_FLAGS;
 #define FMOD_DEBUG_LEVEL_NONE                       0x00000000
@@ -82,7 +82,7 @@ typedef unsigned int FMOD_MEMORY_TYPE;
 #define FMOD_MEMORY_PERSISTENT                      0x00200000
 #define FMOD_MEMORY_ALL                             0xFFFFFFFF
 
-typedef unsigned int FMOD_INITFLAGS;
+typedef unsigned int FMOD_INITFLAGS;ds
 #define FMOD_INIT_NORMAL                            0x00000000
 #define FMOD_INIT_STREAM_FROM_UPDATE                0x00000001
 #define FMOD_INIT_MIX_FROM_UPDATE                   0x00000002
