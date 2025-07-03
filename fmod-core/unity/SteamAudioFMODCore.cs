@@ -30,19 +30,27 @@ namespace SteamAudio
         // Native Plugin Interface
         // --------------------------------------------------------------------------------------------------------------------
 
-        [DllImport("steamaudio_unity_fmodcore")]
+        // Try enhanced build first, fall back to original build
+        private const string PLUGIN_NAME =
+#if STEAMAUDIO_FMODCORE_ENHANCED
+            "phonon_fmodcore_enhanced";
+#else
+            "phonon_fmodcore";
+#endif
+
+        [DllImport(PLUGIN_NAME)]
         public static extern void iplUnitySetContext(IntPtr context);
 
-        [DllImport("steamaudio_unity_fmodcore")]
+        [DllImport(PLUGIN_NAME)]
         public static extern void iplUnitySetHRTF(IntPtr hrtf);
 
-        [DllImport("steamaudio_unity_fmodcore")]
+        [DllImport(PLUGIN_NAME)]
         public static extern void iplUnitySetSimulationSettings(SimulationSettings simulationSettings);
 
-        [DllImport("steamaudio_unity_fmodcore")]
+        [DllImport(PLUGIN_NAME)]
         public static extern int iplUnityAddSource(IntPtr source);
 
-        [DllImport("steamaudio_unity_fmodcore")]
+        [DllImport(PLUGIN_NAME)]
         public static extern void iplUnityRemoveSource(int sourceId);
 
         // --------------------------------------------------------------------------------------------------------------------
