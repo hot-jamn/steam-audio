@@ -18,7 +18,7 @@ include(SteamAudioHelpers)
 # VERSION STAMPING
 #
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/steamaudio_fmodcore_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/steamaudio_fmodcore_version.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/steamaudio_fmodcore_version.h ${CMAKE_CURRENT_BINARY_DIR}/steamaudio_fmodcore_version.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/phonon_fmodcore.rc.in ${CMAKE_CURRENT_BINARY_DIR}/phonon_fmodcore.rc)
 
 #
@@ -28,13 +28,11 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/phonon_fmodcore.rc.in ${CMAKE_CURRENT
 # Core source files
 set(SRC_FMODCORE_CORE
     pch.h
-    steamaudio_fmodcore_version.h.in
+    steamaudio_fmodcore_version.h
     library.h
     library.cpp
     steamaudio_fmodcore.h
     steamaudio_fmodcore.cpp
-    steamaudio_unity_fmodcore.h
-    steamaudio_unity_fmodcore.cpp
 )
 
 # Original effect implementations

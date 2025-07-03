@@ -40,7 +40,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2017-2023 Valve Corporation"
             VALUE "OriginalFilename", "phonon_fmodcore.dll"
             VALUE "ProductName", "Steam Audio"
-            VALUE "ProductVersion", "@STEAMAUDIO_VERSION_MAJOR@.@STEAMAUDIO_VERSION_MINOR@.@STEAMAUDIO_VERSION_PATCH@.0"
+            VALUE "ProductVersion", "@STEAMAUDIO_VERSION_MAJOR@.@STEAMAUDIO_VERSION_MINOR@.@STEAMAUDIO_VERSION_PATCH@"
         END
     END
     BLOCK "VarFileInfo"

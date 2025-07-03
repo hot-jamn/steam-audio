@@ -324,7 +324,7 @@ void initReverbParameterDescs()
 // --------------------------------------------------------------------------------------------------------------------
 
 FMOD_DSP_DESCRIPTION gReverbDescription = {
-    FMOD_PLUGIN_SDK_VERSION,
+    0x00020229,
     "Steam Audio FMOD Core Reverb",
     0x00010000,
     1, 1,

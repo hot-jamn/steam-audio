@@ -532,7 +532,7 @@ extern FMOD_DSP_PARAMETER_DESC* gMixerReturnParameterDescsArray[IPL_FMODCORE_MIX
 
 FMOD_DSP_DESCRIPTION gEnhancedMixerReturnEffect =
 {
-    FMOD_PLUGIN_SDK_VERSION,
+    0x00020229,
     "SA Enhanced MixerReturn",
     0x00010000,
     1,

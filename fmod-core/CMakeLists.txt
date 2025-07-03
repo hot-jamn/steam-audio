@@ -17,7 +17,7 @@ cmake_minimum_required(VERSION 3.17)
 project(Phonon VERSION 4.6.1)
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_MODULE_PATH "${CMAKE_HOME_DIRECTORY}/build" "${CMAKE_HOME_DIRECTORY}/../unity/build")
+set(CMAKE_MODULE_PATH "${CMAKE_HOME_DIRECTORY}/build")
 
 
 #
@@ -200,8 +200,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/phonon_fmodcore.rc.in ${CMAKE_CUR
 # DEPENDENCIES
 #
 
-find_package(Unity REQUIRED)
-
 find_package(FMOD REQUIRED)
 
 find_package(SteamAudio REQUIRED)
@@ -243,8 +241,6 @@ set(SRC_FMODCORE_CORE
     src/library.cpp
     src/steamaudio_fmodcore.h
     src/steamaudio_fmodcore.cpp
-    src/steamaudio_unity_fmodcore.h
-    src/steamaudio_unity_fmodcore.cpp
 )
 
 # Original implementation
