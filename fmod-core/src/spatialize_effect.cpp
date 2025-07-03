@@ -523,9 +523,9 @@ void initSpatializeParameterDescs()
 // --------------------------------------------------------------------------------------------------------------------
 
 FMOD_DSP_DESCRIPTION gSpatializeDescription = {
-    0x00020229,
+    FMOD_PLUGIN_SDK_VERSION,
     "Steam Audio FMOD Spatializer",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1, 1,
     spatializeCreate,
     spatializeRelease,

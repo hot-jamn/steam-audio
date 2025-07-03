@@ -336,9 +336,9 @@ void initMixerReturnParameterDescs()
 // --------------------------------------------------------------------------------------------------------------------
 
 FMOD_DSP_DESCRIPTION gMixerReturnDescription = {
-    0x00020229,
+    FMOD_PLUGIN_SDK_VERSION,
     "SA MixerReturn",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1, 1,
     mixerReturnCreate,
     mixerReturnRelease,

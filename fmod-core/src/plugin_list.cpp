@@ -99,7 +99,7 @@ F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetPluginDescription(unsigned int inde
 // Plugin version information
 F_EXPORT unsigned int F_CALL FMODGetPluginVersion()
 {
-    return 0x00020229;
+    return FMOD_PLUGIN_SDK_VERSION;
 }
 
 // Plugin name

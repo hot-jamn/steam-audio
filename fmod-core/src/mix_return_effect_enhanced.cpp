@@ -532,9 +532,9 @@ extern FMOD_DSP_PARAMETER_DESC* gMixerReturnParameterDescsArray[IPL_FMODCORE_MIX
 
 FMOD_DSP_DESCRIPTION gEnhancedMixerReturnEffect =
 {
-    0x00020229,
+    FMOD_PLUGIN_SDK_VERSION,
     "SA Enhanced MixerReturn",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1,
     1,
     enhancedMixerReturnCreate,

@@ -786,9 +786,9 @@ FMOD_RESULT processAudioWithSteamAudio(EnhancedSpatializerEffectState* state,
 
 FMOD_DSP_DESCRIPTION gEnhancedSpatializeEffect =
 {
-    0x00020229,
+    FMOD_PLUGIN_SDK_VERSION,
     "Steam Audio Enhanced Spatial",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1,
     1,
     enhancedSpatializeCreate,
