@@ -52,13 +52,6 @@ std::atomic<bool> gHRTFDisabled{ false };
 
 std::shared_ptr<SourceManager> gSourceManager;
 
-
-inline void PRINT(const std::string& msg) {
-    auto formatted = std::format("STEAMFMOD: {}", msg);
-    std::wstring ws(formatted.begin(), formatted.end());
-    OutputDebugStringW(ws.c_str());
-}
-
 // --------------------------------------------------------------------------------------------------------------------
 // Helper Functions
 // --------------------------------------------------------------------------------------------------------------------

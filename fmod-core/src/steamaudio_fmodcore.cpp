@@ -19,6 +19,26 @@
 
 namespace SteamAudioFMODCore {
 
+    // --------------------------------------------------------------------------------------------------------------------
+    // Plugin Initialization
+    // --------------------------------------------------------------------------------------------------------------------
+
+    F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+    {
+        initSpatializeParameterDescs();
+        initReverbParameterDescs();
+        initMixerReturnParameterDescs();
+        return gPluginList;
+    }
+
+    FMOD_PLUGINLIST gPluginList[] =
+    {
+        { FMOD_PLUGINTYPE_DSP, &gSpatializeEffect },
+        { FMOD_PLUGINTYPE_DSP, &gReverbEffect },
+        { FMOD_PLUGINTYPE_DSP, &gMixerReturnEffect },
+        { FMOD_PLUGINTYPE_MAX, nullptr }
+    };
+
 // --------------------------------------------------------------------------------------------------------------------
 // Global State
 // --------------------------------------------------------------------------------------------------------------------

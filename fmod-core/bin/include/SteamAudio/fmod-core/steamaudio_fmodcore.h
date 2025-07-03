@@ -41,6 +41,12 @@
 
 namespace SteamAudioFMODCore {
 
+    extern FMOD_DSP_DESCRIPTION gSpatializeEffect;
+    extern FMOD_DSP_DESCRIPTION gReverbEffect;
+    extern FMOD_DSP_DESCRIPTION gMixerReturnEffect;
+    extern FMOD_PLUGINLIST gPluginList[];
+
+
 // --------------------------------------------------------------------------------------------------------------------
 // Parameter Types
 // --------------------------------------------------------------------------------------------------------------------
@@ -188,15 +194,15 @@ private:
 // Parameter Initialization Functions
 // --------------------------------------------------------------------------------------------------------------------
 
-void initSpatializeParameterDescs();
-void initReverbParameterDescs();
-void initMixerReturnParameterDescs();
-
 // Helper function to get speaker layout for number of channels
 IPLSpeakerLayout speakerLayoutForNumChannels(int numChannels);
 
 // Helper function to process audio with Steam Audio
 void processAudioWithSteamAudio(void* inputBuffer, void* outputBuffer, int numSamples, int numChannels);
+
+void initSpatializeParameterDescs();
+void initReverbParameterDescs();
+void initMixerReturnParameterDescs();
 
 }
 
@@ -206,7 +212,6 @@ void processAudioWithSteamAudio(void* inputBuffer, void* outputBuffer, int numSa
 // --------------------------------------------------------------------------------------------------------------------
 
 extern "C" {
-
 /**
  *  DSP parameters for the "Steam Audio FMOD Core Spatializer" effect.
  */
