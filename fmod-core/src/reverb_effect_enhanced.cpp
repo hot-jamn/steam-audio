@@ -918,7 +918,7 @@ FMOD_DSP_PARAMETER_DESC* gEnhancedReverbParameters[] =
 
 FMOD_DSP_DESCRIPTION gEnhancedReverbEffect =
 {
-    FMOD_PLUGIN_SDK_VERSION,
+    0x00020229,
     "Steam Audio Enhanced Reverb",
     0x00010000,
     1,

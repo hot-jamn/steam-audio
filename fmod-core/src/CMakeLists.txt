@@ -18,7 +18,7 @@ include(SteamAudioHelpers)
 # VERSION STAMPING
 #
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/steamaudio_fmodcore_version.h ${CMAKE_CURRENT_BINARY_DIR}/steamaudio_fmodcore_version.h)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/steamaudio_fmodcore_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/steamaudio_fmodcore_version.h)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/phonon_fmodcore.rc.in ${CMAKE_CURRENT_BINARY_DIR}/phonon_fmodcore.rc)
 
 #

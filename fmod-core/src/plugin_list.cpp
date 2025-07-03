@@ -99,7 +99,7 @@ F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetPluginDescription(unsigned int inde
 // Plugin version information
 F_EXPORT unsigned int F_CALL FMODGetPluginVersion()
 {
-    return STEAMAUDIO_FMODCORE_VERSION;
+    return 0x00020229;
 }
 
 // Plugin name
