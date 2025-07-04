@@ -212,8 +212,6 @@ void initMixerReturnParameterDescs();
 // --------------------------------------------------------------------------------------------------------------------
 
 extern "C" {
-
-
     F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList();
 
     F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();

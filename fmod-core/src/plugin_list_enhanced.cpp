@@ -57,7 +57,25 @@ extern FMOD_DSP_DESCRIPTION gMixerReturnEffect;
  * - Thread-safe operation with atomic state management
  * - Detailed logging and diagnostics for production debugging
  */
-FMOD_DSP_DESCRIPTION* gEnhancedPluginList[] =
+
+FMOD_PLUGINLIST gEnhancedPluginList[] =
+{
+    { FMOD_PLUGINTYPE_DSP, &gEnhancedSpatializeEffect },     // Enhanced Spatializer
+    { FMOD_PLUGINTYPE_DSP, &gEnhancedReverbEffect },         // Enhanced Reverb
+    { FMOD_PLUGINTYPE_DSP, &gEnhancedMixerReturnEffect },    // Enhanced Mixer Return
+
+
+#ifdef STEAMAUDIO_FMODCORE_BUILD_ORIGINAL
+    // Original effects (for backward compatibility)
+    { FMOD_PLUGINTYPE_DSP, &gSpatializeEffect },             // Steam Audio Spatializer
+    { FMOD_PLUGINTYPE_DSP, &gReverbEffect },                 // Steam Audio Reverb
+    { FMOD_PLUGINTYPE_DSP, &gMixerReturnEffect },            // Steam Audio Mixer Return
+#endif
+        { FMOD_PLUGINTYPE_MAX, nullptr }
+
+};
+
+FMOD_DSP_DESCRIPTION* gEnhancedDescriptions[] =
 {
     // Enhanced effects (recommended for production use)
     &gEnhancedSpatializeEffect,     // Steam Audio Enhanced Spatializer
@@ -70,8 +88,6 @@ FMOD_DSP_DESCRIPTION* gEnhancedPluginList[] =
     &gReverbEffect,                 // Steam Audio Reverb
     &gMixerReturnEffect,            // Steam Audio Mixer Return
 #endif
-    
-    nullptr // Null terminator
 };
 
 /**
@@ -81,7 +97,7 @@ FMOD_DSP_DESCRIPTION* gEnhancedPluginList[] =
 int GetEnhancedPluginCount()
 {
     int count = 0;
-    while (gEnhancedPluginList[count] != nullptr)
+    while (gEnhancedDescriptions[count] != nullptr)
     {
         count++;
     }
@@ -100,7 +116,7 @@ FMOD_DSP_DESCRIPTION* GetEnhancedPlugin(int index)
         return nullptr;
     }
     
-    return gEnhancedPluginList[index];
+    return gEnhancedDescriptions[index];
 }
 
 /**
@@ -117,7 +133,7 @@ FMOD_DSP_DESCRIPTION* FindEnhancedPlugin(const char* name)
     
     for (int i = 0; i < GetEnhancedPluginCount(); ++i)
     {
-        auto* plugin = gEnhancedPluginList[i];
+        auto* plugin = gEnhancedDescriptions[i];
         if (plugin && plugin->name && strcmp(plugin->name, name) == 0)
         {
             return plugin;
@@ -193,7 +209,7 @@ bool ValidateEnhancedPlugins()
     
     for (int i = 0; i < GetEnhancedPluginCount(); ++i)
     {
-        auto* plugin = gEnhancedPluginList[i];
+        auto* plugin = gEnhancedDescriptions[i];
         if (!plugin)
         {
             allValid = false;
@@ -264,7 +280,7 @@ PluginStats GetEnhancedPluginStats()
     // Count enhanced vs original plugins
     for (int i = 0; i < stats.totalPlugins; ++i)
     {
-        auto* plugin = gEnhancedPluginList[i];
+        auto* plugin = gEnhancedDescriptions[i];
         if (IsEnhancedPlugin(plugin))
         {
             stats.enhancedPlugins++;
@@ -315,34 +331,30 @@ void LogEnhancedPluginInfo()
         }
     }
 }
+/*
+FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+{
+    using namespace SteamAudioFMODCore;
+
+    // Log plugin information on first access
+    static bool logged = false;
+    if (!logged)
+    {
+        LogEnhancedPluginInfo();
+        logged = true;
+    }
+
+    return gEnhancedPluginList;
+}
+*/
 
 } // namespace SteamAudioFMODCore
-
 // --------------------------------------------------------------------------------------------------------------------
 // C API for FMOD Plugin Discovery
 // --------------------------------------------------------------------------------------------------------------------
 
 extern "C"
 {
-    /**
-     * @brief Get the enhanced plugin list for FMOD registration.
-     * @return Array of plugin descriptions terminated by nullptr.
-     */
-    F_EXPORT FMOD_DSP_DESCRIPTION** F_CALL FMODGetDSPDescriptionList()
-    {
-        using namespace SteamAudioFMODCore;
-        
-        // Log plugin information on first access
-        static bool logged = false;
-        if (!logged)
-        {
-            LogEnhancedPluginInfo();
-            logged = true;
-        }
-        
-        return gEnhancedPluginList;
-    }
-    
     /**
      * @brief Get the number of enhanced plugins.
      * @return Number of plugins available.

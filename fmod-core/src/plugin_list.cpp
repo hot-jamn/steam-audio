@@ -60,13 +60,6 @@ extern "C" {
 
 // Plugin list - this is what FMOD will call to get all available plugins
 
-// Alternative entry point for individual plugin loading
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetDSPDescription()
-{
-    // Return the spatializer as the default plugin
-    return FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
-}
-
 // Plugin information
 F_EXPORT unsigned int F_CALL FMODGetNumPlugins()
 {
