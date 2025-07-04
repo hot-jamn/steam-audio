@@ -18,21 +18,18 @@
 #include "steamaudio_fmodcore.h"
 
 namespace SteamAudioFMODCore {
-    FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
-    {
-        initSpatializeParameterDescs();
-        initReverbParameterDescs();
-        initMixerReturnParameterDescs();
-        return gPluginList;
-    }
 
-    FMOD_PLUGINLIST gPluginList[] =
+    static FMOD_PLUGINLIST gPluginList[] =
     {
         { FMOD_PLUGINTYPE_DSP, &gSpatializeEffect },
         { FMOD_PLUGINTYPE_DSP, &gReverbEffect },
         { FMOD_PLUGINTYPE_DSP, &gMixerReturnEffect },
         { FMOD_PLUGINTYPE_MAX, nullptr }
     };
+
+    extern FMOD_DSP_DESCRIPTION gSpatializeEffect;
+    extern FMOD_DSP_DESCRIPTION gMixerReturnEffect;
+    extern FMOD_DSP_DESCRIPTION gReverbEffect;
 
     FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription()
     {
@@ -94,4 +91,15 @@ F_EXPORT const char* F_CALL FMODGetPluginName()
 }
 
 }
+}
+
+using namespace SteamAudioFMODCore;
+
+
+FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+{
+    initSpatializeParameterDescs();
+    initReverbParameterDescs();
+    initMixerReturnParameterDescs();
+    return gPluginList;
 }

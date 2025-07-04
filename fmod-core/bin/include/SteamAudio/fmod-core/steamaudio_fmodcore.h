@@ -44,7 +44,6 @@ namespace SteamAudioFMODCore {
     extern FMOD_DSP_DESCRIPTION gSpatializeEffect;
     extern FMOD_DSP_DESCRIPTION gReverbEffect;
     extern FMOD_DSP_DESCRIPTION gMixerReturnEffect;
-    extern FMOD_PLUGINLIST gPluginList[];
 
 
 // --------------------------------------------------------------------------------------------------------------------
