@@ -152,7 +152,6 @@ def cmake_generate(args):
 
     # On Windows x64, build documentation.
     if args.platform == 'windows' and args.architecture == 'x64':
-        cmake_args += ['-DSTEAMAUDIOFMOD_BUILD_DOCS=TRUE']
         doxygen_path = find_tool('doxygen', r'doxygen-(\d+)\.(\d+)\.?(\d+)?', [1, 9])
         if doxygen_path is not None:
             cmake_args += ['-DDOXYGEN_EXECUTABLE=' + os.path.normpath(os.path.join(doxygen_path, 'doxygen.exe'))]

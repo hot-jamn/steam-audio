@@ -53,7 +53,7 @@ std::atomic<bool> gHRTFDisabled{ false };
 std::shared_ptr<SourceManager> gSourceManager;
 
 inline void PRINT(const std::string& msg) {
-    std::ofstream gLogFile("steamaudio_fmod.txt", std::ios::app);
+    std::ofstream gLogFile("fmod_log.txt", std::ios::app);
     if (gLogFile.is_open()) {
         gLogFile << msg << std::endl;
     }
@@ -452,7 +452,7 @@ void F_CALL iplFMODGetVersion(unsigned int* major,
 
 void F_CALL iplFMODInitialize(IPLContext context)
 {
-    PRINT(std::format("Initializing with context {}", context->);
+    PRINT("Initializing");
     assert(gContext == nullptr);
 
     gContext = iplContextRetain(context);

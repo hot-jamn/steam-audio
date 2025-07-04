@@ -83,6 +83,9 @@ FMOD_DSP_PARAMETER_DESC gParams[] = {
     { FMOD_DSP_PARAMETER_TYPE_DATA, "DistRange", "", "Distance attenuation range." },
     { FMOD_DSP_PARAMETER_TYPE_INT, "SimOutHandle", "", "Simulation outputs handle." },
     { FMOD_DSP_PARAMETER_TYPE_INT, "OutputFormat", "", "Output Format" },
+    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "X", "", "X" },
+    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Y", "", "Y" },
+    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Z", "", "Z" },
 };
 
 FMOD_DSP_PARAMETER_DESC* gParamsArray[IPL_SPATIALIZE_NUM_PARAMS];
@@ -137,6 +140,9 @@ void initParamDescs()
     gParams[IPL_SPATIALIZE_DISTANCE_ATTENUATION_RANGE].datadesc = {FMOD_DSP_PARAMETER_DATA_TYPE_ATTENUATION_RANGE};
     gParams[IPL_SPATIALIZE_SIMULATION_OUTPUTS_HANDLE].intdesc = {-1, 10000, -1};
     gParams[IPL_SPATIALIZE_OUTPUT_FORMAT].intdesc = {0, 2, 0, false, gOutputFormatValues};
+    gParams[X].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+    gParams[Y].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+    gParams[Z].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
 }
 
 struct State
@@ -148,6 +154,9 @@ struct State
     ParameterApplyType applyDirectivity;
     ParameterApplyType applyOcclusion;
     ParameterApplyType applyTransmission;
+    float x;
+    float y;
+    float z;
     bool applyReflections;
     bool applyPathing;
     bool directBinaural;
@@ -851,6 +860,15 @@ FMOD_RESULT F_CALL setFloat(FMOD_DSP_STATE* state,
     case IPL_SPATIALIZE_PATHING_MIXLEVEL:
         effect->pathingMixLevel = value;
         break;
+    case X:
+        effect->x = value;
+		break;
+    case Y:
+        effect->y = value;
+        break;
+    case Z:
+        effect->z = value;
+        break;
     default:
         return FMOD_ERR_INVALID_PARAM;
     }
@@ -891,6 +909,7 @@ IPLDirectEffectParams getDirectParams(FMOD_DSP_STATE* state,
                                       bool updatingOverallGain)
 {
     auto effect = reinterpret_cast<State*>(state->plugindata);
+    source.origin = { effect->x, effect->y, effect->z };
 
     auto hasSource = false;
     IPLSimulationOutputs simulationOutputs{};
@@ -1027,6 +1046,7 @@ void updateOverallGain(FMOD_DSP_STATE* state,
                        IPLCoordinateSpace3 listener)
 {
     auto effect = reinterpret_cast<State*>(state->plugindata);
+    source.origin = { effect->x, effect->y, effect->z };
     auto directParams = getDirectParams(state, source, listener, true);
 
     auto level = effect->directMixLevel;
@@ -1053,6 +1073,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
                            FMOD_DSP_PROCESS_OPERATION operation)
 {
     auto effect = reinterpret_cast<State*>(state->plugindata);
+    effect->source.absolute = { effect->x, effect->y, effect->z };
 
     auto sourceCoordinates = calcCoordinates(effect->source.absolute);
     PRINT(std::format("Spatialize: source coordinates: ({}, {}, {})", sourceCoordinates.origin.x, sourceCoordinates.origin.y, sourceCoordinates.origin.z));
