@@ -1,0 +1,3 @@
+D:/hot-jamn/steam-audio/fmod-core-linked/bin/lib/windows-x64/phonon_fmod.lib
+D:/hot-jamn/steam-audio/fmod-core-linked/bin/lib/windows-x64/phonon_fmod.dll
+D:/hot-jamn/steam-audio/fmod-core-linked/bin/symbols/windows-x64/phonon_fmod.pdb

@@ -354,7 +354,7 @@ FMOD_RESULT F_CALLBACK reverbSetParameterFloat(FMOD_DSP_STATE* dsp, int index, f
 FMOD_RESULT F_CALLBACK reverbSetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL value)
 {
     if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;m
+        return FMOD_ERR_INVALID_PARAM;
 
     auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
 

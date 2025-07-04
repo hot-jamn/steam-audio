@@ -18,7 +18,7 @@
 #include "steamaudio_fmodcore.h"
 
 namespace SteamAudioFMODCore {
-f
+
 namespace SpatializeEffect {
 
 FMOD_DSP_PARAMETER_DESC gParams[IPL_FMODCORE_SPATIALIZE_NUM_PARAMS] = {};
@@ -38,76 +38,46 @@ void initSpatializeParameterDescs()
         gParamsArray[i] = &gParams[i];
     }
 
-    FMOD_DSP_PARAMETER_DESC_DATA attributes_desc = { FMOD_DSP_PARAMETER_DATA_TYPE_3DATTRIBUTES };
-    gParams[IPL_FMODCORE_SPATIALIZE_SOURCE_POSITION] = { FMOD_DSP_PARAMETER_TYPE_DATA, "SourcePos", "", "Position of the source.", { .datadesc = attributes_desc } };
-    FMOD_DSP_PARAMETER_DESC_DATA gain_desc = { FMOD_DSP_PARAMETER_DATA_TYPE_OVERALLGAIN };
-    gParams[IPL_FMODCORE_SPATIALIZE_OVERALL_GAIN] = { FMOD_DSP_PARAMETER_TYPE_DATA, "OverallGain", "", "Overall gain.", { .datadesc = gain_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT apply_da_desc = { 0, 2, 0, false, gDistanceAttenuationTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_DISTANCEATTENUATION] = { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyDA", "", "Apply distance attenuation.", { .intdesc = apply_da_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT apply_aa_desc = { 0, 2, 0, false, gParameterApplyTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_AIRABSORPTION] = { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyAA", "", "Apply air absorption.", { .intdesc = apply_aa_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT apply_dir_desc = { 0, 2, 0, false, gParameterApplyTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_DIRECTIVITY] = { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyDir", "", "Apply directivity.", { .intdesc = apply_dir_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT apply_occl_desc = { 0, 2, 0, false, gParameterApplyTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_OCCLUSION] = { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyOccl", "", "Apply occlusion.", { .intdesc = apply_occl_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT apply_trans_desc = { 0, 2, 0, false, gParameterApplyTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_TRANSMISSION] = { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyTrans", "", "Apply transmission.", { .intdesc = apply_trans_desc } };
-    FMOD_DSP_PARAMETER_DESC_BOOL apply_refl_desc = { false };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_REFLECTIONS] = { FMOD_DSP_PARAMETER_TYPE_BOOL, "ApplyRefl", "", "Apply reflections.", { .booldesc = apply_refl_desc } };
-    FMOD_DSP_PARAMETER_DESC_BOOL apply_path_desc = { false };
-    gParams[IPL_FMODCORE_SPATIALIZE_APPLY_PATHING] = { FMOD_DSP_PARAMETER_TYPE_BOOL, "ApplyPath", "", "Apply pathing.", { .booldesc = apply_path_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT hrtf_interp_desc = { 0, 1, 0, false, gHRTFInterpolationValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_HRTF_INTERPOLATION] = { FMOD_DSP_PARAMETER_TYPE_INT, "Interpolation", "", "HRTF interpolation.", { .intdesc = hrtf_interp_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT dist_atten_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "DistAtt", "", "Distance attenuation.", { .floatdesc = dist_atten_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT da_type_desc = { 0, 4, 2, false, gRolloffTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION_ROLLOFFTYPE] = { FMOD_DSP_PARAMETER_TYPE_INT, "DAType", "", "Distance attenuation rolloff type.", { .intdesc = da_type_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT da_min_dist_desc = { 0.0f, 10000.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION_MINDISTANCE] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "DAMinDist", "", "Distance attenuation min distance.", { .floatdesc = da_min_dist_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT da_max_dist_desc = { 0.0f, 10000.0f, 20.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION_MAXDISTANCE] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "DAMaxDist", "", "Distance attenuation max distance.", { .floatdesc = da_max_dist_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT air_abs_low_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_AIRABSORPTION_LOW] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "AirAbsLow", "", "Air absorption (low frequency).", { .floatdesc = air_abs_low_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT air_abs_mid_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_AIRABSORPTION_MID] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "AirAbsMid", "", "Air absorption (mid frequency).", { .floatdesc = air_abs_mid_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT air_abs_high_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_AIRABSORPTION_HIGH] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "AirAbsHigh", "", "Air absorption (high frequency).", { .floatdesc = air_abs_high_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT directivity_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DIRECTIVITY] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Directivity", "", "Directivity.", { .floatdesc = directivity_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT dipole_weight_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DIRECTIVITY_DIPOLEWEIGHT] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "DipoleWeight", "", "Directivity dipole weight.", { .floatdesc = dipole_weight_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT dipole_power_desc = { 1.0f, 4.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DIRECTIVITY_DIPOLEPOWER] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "DipolePower", "", "Directivity dipole power.", { .floatdesc = dipole_power_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT occlusion_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_OCCLUSION] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Occlusion", "", "Occlusion.", { .floatdesc = occlusion_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT trans_type_desc = { 0, 1, 0, false, gTransmissionTypeValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_TYPE] = { FMOD_DSP_PARAMETER_TYPE_INT, "TransType", "", "Transmission type.", { .intdesc = trans_type_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT trans_low_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_LOW] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "TransLow", "", "Transmission (low frequency).", { .floatdesc = trans_low_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT trans_mid_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_MID] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "TransMid", "", "Transmission (mid frequency).", { .floatdesc = trans_mid_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT trans_high_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_HIGH] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "TransHigh", "", "Transmission (high frequency).", { .floatdesc = trans_high_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT direct_mix_level_desc = { 0.0f, 1.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_DIRECT_MIXLEVEL] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "DirMixLevel", "", "Direct mix level.", { .floatdesc = direct_mix_level_desc } };
-    FMOD_DSP_PARAMETER_DESC_BOOL refl_binaural_desc = { false };
-    gParams[IPL_FMODCORE_SPATIALIZE_REFLECTIONS_BINAURAL] = { FMOD_DSP_PARAMETER_TYPE_BOOL, "ReflBinaural", "", "Apply HRTF to reflections.", { .booldesc = refl_binaural_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT refl_mix_level_desc = { 0.0f, 10.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_REFLECTIONS_MIXLEVEL] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "ReflMixLevel", "", "Reflections mix level.", { .floatdesc = refl_mix_level_desc } };
-    FMOD_DSP_PARAMETER_DESC_BOOL path_binaural_desc = { false };
-    gParams[IPL_FMODCORE_SPATIALIZE_PATHING_BINAURAL] = { FMOD_DSP_PARAMETER_TYPE_BOOL, "PathBinaural", "", "Apply HRTF to pathing.", { .booldesc = path_binaural_desc } };
-    FMOD_DSP_PARAMETER_DESC_FLOAT path_mix_level_desc = { 0.0f, 10.0f, 1.0f };
-    gParams[IPL_FMODCORE_SPATIALIZE_PATHING_MIXLEVEL] = { FMOD_DSP_PARAMETER_TYPE_FLOAT, "PathMixLevel", "", "Pathing mix level.", { .floatdesc = path_mix_level_desc } };
-    FMOD_DSP_PARAMETER_DESC_DATA sim_outputs_desc = { FMOD_DSP_PARAMETER_DATA_TYPE_USER };
-    gParams[IPL_FMODCORE_SPATIALIZE_SIMULATION_OUTPUTS] = { FMOD_DSP_PARAMETER_TYPE_DATA, "SimOutputs", "", "Simulation outputs.", { .datadesc = sim_outputs_desc } };
-    FMOD_DSP_PARAMETER_DESC_BOOL direct_binaural_desc = { true };
-    gParams[IPL_FMODCORE_SPATIALIZE_DIRECT_BINAURAL] = { FMOD_DSP_PARAMETER_TYPE_BOOL, "DirectBinaural", "", "Apply HRTF to direct path.", { .booldesc = direct_binaural_desc } };
-    FMOD_DSP_PARAMETER_DESC_DATA dist_range_desc = { FMOD_DSP_PARAMETER_DATA_TYPE_ATTENUATION_RANGE };
-    gParams[IPL_FMODCORE_SPATIALIZE_DISTANCE_ATTENUATION_RANGE] = { FMOD_DSP_PARAMETER_TYPE_DATA, "DistRange", "", "Distance attenuation range.", { .datadesc = dist_range_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT sim_out_handle_desc = { -1, 10000, -1 };
-    gParams[IPL_FMODCORE_SPATIALIZE_SIMULATION_OUTPUTS_HANDLE] = { FMOD_DSP_PARAMETER_TYPE_INT, "SimOutHandle", "", "Simulation outputs handle.", { .intdesc = sim_out_handle_desc } };
-    FMOD_DSP_PARAMETER_DESC_INT output_format_desc = { 0, 2, 0, false, gOutputFormatValues };
-    gParams[IPL_FMODCORE_SPATIALIZE_OUTPUT_FORMAT] = { FMOD_DSP_PARAMETER_TYPE_INT, "OutputFormat", "", "Output Format", { .intdesc = output_format_desc } };
+    
+        gParams[IPL_FMODCORE_SPATIALIZE_SOURCE_POSITION].datadesc = { FMOD_DSP_PARAMETER_DATA_TYPE_3DATTRIBUTES };
+        gParams[IPL_FMODCORE_SPATIALIZE_OVERALL_GAIN].datadesc = { FMOD_DSP_PARAMETER_DATA_TYPE_OVERALLGAIN };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_DISTANCEATTENUATION].intdesc = { 0, 2, 0, false, gDistanceAttenuationTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_AIRABSORPTION].intdesc = { 0, 2, 0, false, gParameterApplyTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_DIRECTIVITY].intdesc = { 0, 2, 0, false, gParameterApplyTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_OCCLUSION].intdesc = { 0, 2, 0, false, gParameterApplyTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_TRANSMISSION].intdesc = { 0, 2, 0, false, gParameterApplyTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_REFLECTIONS].booldesc = { false };
+        gParams[IPL_FMODCORE_SPATIALIZE_APPLY_PATHING].booldesc = { false };
+        gParams[IPL_FMODCORE_SPATIALIZE_HRTF_INTERPOLATION].intdesc = { 0, 1, 0, false, gHRTFInterpolationValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION_ROLLOFFTYPE].intdesc = { 0, 4, 2, false, gRolloffTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION_MINDISTANCE].floatdesc = { 0.0f, 10000.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_DISTANCEATTENUATION_MAXDISTANCE].floatdesc = { 0.0f, 10000.0f, 20.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_AIRABSORPTION_LOW].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_AIRABSORPTION_MID].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_AIRABSORPTION_HIGH].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_DIRECTIVITY].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_DIRECTIVITY_DIPOLEWEIGHT].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_DIRECTIVITY_DIPOLEPOWER].floatdesc = { 1.0f, 4.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_OCCLUSION].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_TYPE].intdesc = { 0, 1, 0, false, gTransmissionTypeValues };
+        gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_LOW].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_MID].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_TRANSMISSION_HIGH].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_DIRECT_MIXLEVEL].floatdesc = { 0.0f, 1.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_REFLECTIONS_BINAURAL].booldesc = { false };
+        gParams[IPL_FMODCORE_SPATIALIZE_REFLECTIONS_MIXLEVEL].floatdesc = { 0.0f, 10.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_PATHING_BINAURAL].booldesc = { false };
+        gParams[IPL_FMODCORE_SPATIALIZE_PATHING_MIXLEVEL].floatdesc = { 0.0f, 10.0f, 1.0f };
+        gParams[IPL_FMODCORE_SPATIALIZE_SIMULATION_OUTPUTS].datadesc = { FMOD_DSP_PARAMETER_DATA_TYPE_USER };
+        gParams[IPL_FMODCORE_SPATIALIZE_DIRECT_BINAURAL].booldesc = { true };
+        gParams[IPL_FMODCORE_SPATIALIZE_DISTANCE_ATTENUATION_RANGE].datadesc = { FMOD_DSP_PARAMETER_DATA_TYPE_ATTENUATION_RANGE };
+        gParams[IPL_FMODCORE_SPATIALIZE_SIMULATION_OUTPUTS_HANDLE].intdesc = { -1, 10000, -1 };
+        gParams[IPL_FMODCORE_SPATIALIZE_OUTPUT_FORMAT].intdesc = { 0, 2, 0, false, gOutputFormatValues };
+        gParams[IPL_FMODCORE_X].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+        gParams[IPL_FMODCORE_Y].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+        gParams[IPL_FMODCORE_Z].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+        gParams[IPL_FMODCORE_SAMPLE_RATE].intdesc = { 0, 500000, 48000 };
 }
 
 struct State
@@ -556,7 +526,6 @@ FMOD_RESULT F_CALLBACK process(FMOD_DSP_STATE* dsp, unsigned int length, const F
     if (!hrtf)
         return FMOD_ERR_NOTREADY;
 
-    int numChannelsIn, numChannelsOut;
     FMOD_SPEAKERMODE speakerModeIn, speakerModeOut;
     dsp->functions->getspeakermode(dsp, &speakerModeIn, &speakerModeOut);
 

@@ -75,6 +75,10 @@ typedef enum IPLFMODCoreSpatializerParams
     IPL_FMODCORE_SPATIALIZE_DISTANCE_ATTENUATION_RANGE,
     IPL_FMODCORE_SPATIALIZE_SIMULATION_OUTPUTS_HANDLE,
     IPL_FMODCORE_SPATIALIZE_OUTPUT_FORMAT,
+    IPL_FMODCORE_X,
+    IPL_FMODCORE_Y,
+    IPL_FMODCORE_Z,
+    IPL_FMODCORE_SAMPLE_RATE,
     IPL_FMODCORE_SPATIALIZE_NUM_PARAMS
 } IPLFMODCoreSpatializerParams;
 
@@ -264,17 +268,17 @@ void initMixerReturnParameterDescs();
 // --------------------------------------------------------------------------------------------------------------------
 
 extern "C" {
-    F_EXPORT void F_CALL iplFMODCoreGetVersion(unsigned int* major, unsigned int* minor, unsigned int* patch);
-    F_EXPORT void F_CALL iplFMODCoreInitialize(IPLContext context);
-    F_EXPORT void F_CALL iplFMODCoreTerminate();
-    F_EXPORT void F_CALL iplFMODCoreSetHRTF(IPLHRTF hrtf);
-    F_EXPORT void F_CALL iplFMODCoreSetSimulationSettings(IPLSimulationSettings simulationSettings);
-    F_EXPORT void F_CALL iplFMODCoreSetReverbSource(IPLSource reverbSource);
-    F_EXPORT IPLint32 F_CALL iplFMODCoreAddSource(IPLSource source);
-    F_EXPORT void F_CALL iplFMODCoreRemoveSource(IPLint32 handle);
-    F_EXPORT void F_CALL iplFMODCoreSetHRTFDisabled(bool disabled);
-    F_EXPORT void F_CALL iplFMODCoreSetSharedContext(IPLContext context);
-    F_EXPORT IPLContext F_CALL iplFMODCoreGetSharedContext();
+    F_EXPORT void F_CALL iplFMODGetVersion(unsigned int* major, unsigned int* minor, unsigned int* patch);
+    F_EXPORT void F_CALL iplFMODInitialize(IPLContext context);
+    F_EXPORT void F_CALL iplFMODTerminate();
+    F_EXPORT void F_CALL iplFMODSetHRTF(IPLHRTF hrtf);
+    F_EXPORT void F_CALL iplFMODSetSimulationSettings(IPLSimulationSettings simulationSettings);
+    F_EXPORT void F_CALL iplFMODSetReverbSource(IPLSource reverbSource);
+    F_EXPORT IPLint32 F_CALL iplFMODAddSource(IPLSource source);
+    F_EXPORT void F_CALL iplFMODRemoveSource(IPLint32 handle);
+    F_EXPORT void F_CALL iplFMODSetHRTFDisabled(bool disabled);
+    F_EXPORT void F_CALL iplFMODSetSharedContext(IPLContext context);
+    F_EXPORT IPLContext F_CALL iplFMODGetSharedContext();
 }
 
 namespace SteamAudioFMODCore {

@@ -1,0 +1,6 @@
+D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\cmake_pch.cxx;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmod.dir\Release\cmake_pch.obj
+D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore.cpp;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmod.dir\Release\steamaudio_fmodcore.obj
+D:\hot-jamn\steam-audio\fmod-core-linked\src\spatialize_effect.cpp;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmod.dir\Release\spatialize_effect.obj
+D:\hot-jamn\steam-audio\fmod-core-linked\src\reverb_effect.cpp;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmod.dir\Release\reverb_effect.obj
+D:\hot-jamn\steam-audio\fmod-core-linked\src\mix_return_effect.cpp;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmod.dir\Release\mix_return_effect.obj
+D:\hot-jamn\steam-audio\fmod-core-linked\src\plugin_list.cpp;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmod.dir\Release\plugin_list.obj

@@ -1,0 +1,478 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9DB1E298-C162-3C2F-98B5-780EBBCD2A35}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>phonon_fmod</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">phonon_fmod.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">phonon_fmod</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">phonon_fmod.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">phonon_fmod</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">phonon_fmod.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">phonon_fmod</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">phonon_fmod.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">phonon_fmod</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/Debug/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;_DEBUG;CMAKE_INTDIR="Debug";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR=\"Debug\";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/Debug/phonon_fmod.dll D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\hot-jamn\steam-audio\fmod-core-linked\lib\windows-x64\phonon.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/Debug/phonon_fmod.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/Debug/phonon_fmod.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/Release/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR="Release";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR=\"Release\";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/Release/phonon_fmod.dll D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\hot-jamn\steam-audio\fmod-core-linked\lib\windows-x64\phonon.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/Release/phonon_fmod.lib</ImportLibrary>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/Release/phonon_fmod.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/MinSizeRel/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR="MinSizeRel";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR=\"MinSizeRel\";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/MinSizeRel/phonon_fmod.dll D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\hot-jamn\steam-audio\fmod-core-linked\lib\windows-x64\phonon.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/MinSizeRel/phonon_fmod.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/MinSizeRel/phonon_fmod.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <MinimalRebuild></MinimalRebuild>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/RelWithDebInfo/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR="RelWithDebInfo";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;IPL_OS_WINDOWS;IPL_CPU_X64;WINDOWS;UNICODE;_UNICODE;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;NOMINMAX;_DISABLE_EXTENDED_ALIGNED_STORAGE;CMAKE_INTDIR=\"RelWithDebInfo\";phonon_fmod_EXPORTS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\hot-jamn\steam-audio\fmod-core-linked\include;D:\hot-jamn\steam-audio\fmod-core-linked\src;D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src;D:\hot-jamn\steam-audio\fmod-core-linked\include\fmod;D:\hot-jamn\steam-audio\fmod-core-linked\include\phonon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/RelWithDebInfo/phonon_fmod.dll D:/hot-jamn/steam-audio/fmod-core-linked/../unity/src/project/SteamAudioUnity/Assets/Plugins/SteamAudio/Binaries/Windows/x86_64
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>D:\hot-jamn\steam-audio\fmod-core-linked\lib\windows-x64\phonon.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/RelWithDebInfo/phonon_fmod.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/RelWithDebInfo/phonon_fmod.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/hot-jamn/steam-audio/fmod-core-linked/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/hot-jamn/steam-audio/fmod-core-linked -BD:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64 --check-stamp-file D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\src\phonon_fmodcore.rc.in;D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/hot-jamn/steam-audio/fmod-core-linked/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/hot-jamn/steam-audio/fmod-core-linked -BD:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64 --check-stamp-file D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\src\phonon_fmodcore.rc.in;D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/hot-jamn/steam-audio/fmod-core-linked/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/hot-jamn/steam-audio/fmod-core-linked -BD:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64 --check-stamp-file D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\src\phonon_fmodcore.rc.in;D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/hot-jamn/steam-audio/fmod-core-linked/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/hot-jamn/steam-audio/fmod-core-linked -BD:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64 --check-stamp-file D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\src\phonon_fmodcore.rc.in;D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore_version.h.in;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\cmake_pch.cxx">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/Debug/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/Release/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/MinSizeRel/cmake_pch.pch</PrecompiledHeaderOutputFile>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/phonon_fmod.dir/RelWithDebInfo/cmake_pch.pch</PrecompiledHeaderOutputFile>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\spatialize_effect.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\reverb_effect.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\mix_return_effect.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\plugin_list.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Debug/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/Release/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/MinSizeRel/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/hot-jamn/steam-audio/fmod-core-linked/windows-vs2022-x64/src/CMakeFiles/phonon_fmod.dir/RelWithDebInfo/cmake_pch.hxx;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\phonon_fmodcore.rc.in" />
+    <ResourceCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmodcore.rc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
+    </ResourceCompile>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\Debug\cmake_pch.hxx" />
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\Release\cmake_pch.hxx" />
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\MinSizeRel\cmake_pch.hxx" />
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\RelWithDebInfo\cmake_pch.hxx" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\ZERO_CHECK.vcxproj">
+      <Project>{DE78E224-F066-32E7-8DBB-AA2723B2BBDC}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

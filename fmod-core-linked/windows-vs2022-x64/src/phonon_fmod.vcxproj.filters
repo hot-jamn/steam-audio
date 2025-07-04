@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\cmake_pch.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\steamaudio_fmodcore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\spatialize_effect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\reverb_effect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\mix_return_effect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\plugin_list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\phonon_fmodcore.rc.in">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\Debug\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\Release\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\MinSizeRel\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\CMakeFiles\phonon_fmod.dir\RelWithDebInfo\cmake_pch.hxx">
+      <Filter>Precompile Header File</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\hot-jamn\steam-audio\fmod-core-linked\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="D:\hot-jamn\steam-audio\fmod-core-linked\windows-vs2022-x64\src\phonon_fmodcore.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{2F00D741-A6BA-3771-995A-3327E4BCEBA5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Precompile Header File">
+      <UniqueIdentifier>{F7269314-402B-35F0-8E19-46CD4BB6B5D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{23FF6FE7-F147-34E3-8442-B8DFA5CD0AD7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

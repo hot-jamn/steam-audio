@@ -318,13 +318,6 @@ def cmake_generate(args):
         if args.enable_examples:
             print("  - Example applications and demos")
 
-    # On Windows x64, build documentation.
-    if args.platform == 'windows' and args.architecture == 'x64':
-        cmake_args += ['-DSTEAMAUDIOFMODCORE_BUILD_DOCS=TRUE']
-        doxygen_path = find_tool('doxygen', r'doxygen-(\d+)\.(\d+)\.?(\d+)?', [1, 9])
-        if doxygen_path is not None:
-            cmake_args += ['-DDOXYGEN_EXECUTABLE=' + os.path.normpath(os.path.join(doxygen_path, 'doxygen.exe'))]
-
     if args.platform == 'wasm':
         cmake_args += ['-DCMAKE_TOOLCHAIN_FILE=' + os.environ.get('EMSDK') + '/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake']
         cmake_args += ['-DBUILD_SHARED_LIBS=FALSE']

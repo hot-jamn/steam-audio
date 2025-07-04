@@ -104,7 +104,7 @@ install(
 
 if (IPL_OS_WINDOWS)
     install(
-        FILES       ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/phonon_fmodcore.pdb
+        FILES       ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/phonon_fmod.pdb
         DESTINATION symbols/${IPL_BIN_SUBDIR}
     )
 endif()
