@@ -109,8 +109,7 @@ FMOD_RESULT F_CALLBACK spatializeCreate(FMOD_DSP_STATE* dsp)
     if (!dsp)
         return FMOD_ERR_INVALID_PARAM;
 
-    auto* state = new SpatializerEffectState();
-    dsp->plugindata = state;
+    dsp->plugindata = new SpatializerEffectState();
 
     return FMOD_OK;
 }
@@ -428,7 +427,7 @@ FMOD_RESULT F_CALLBACK spatializeSetParameterBool(FMOD_DSP_STATE* dsp, int index
 // DSP Parameter Descriptions
 // --------------------------------------------------------------------------------------------------------------------
 
-FMOD_DSP_PARAMETER_DESC gSpatializeParameterDescs[] = {
+FMOD_DSP_PARAMETER_DESC gSpatializeParameterDescs[] = {a
     { FMOD_DSP_PARAMETER_TYPE_DATA, "SourcePos", "", "Position of the source." },
     { FMOD_DSP_PARAMETER_TYPE_DATA, "OverallGain", "", "Overall gain." },
     { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyDA", "", "Apply distance attenuation." },
@@ -475,7 +474,7 @@ const char* gTransmissionTypeValues[] = {"Frequency Independent", "Frequency Dep
 const char* gRolloffTypeValues[] = {"Linear Squared", "Linear", "Inverse", "Inverse Squared", "Custom"};
 const char* gOutputFormatValues[] = {"From Mixer", "From Final Out", "From Input"};
 
-void initSpatializeParameterDescs()
+extern void initSpatializeParameterDescs()
 {
     for (auto i = 0; i < IPL_FMODCORE_SPATIALIZE_NUM_PARAMS; ++i)
     {
@@ -517,15 +516,14 @@ void initSpatializeParameterDescs()
     gSpatializeParameterDescs[IPL_FMODCORE_SPATIALIZE_SIMULATION_OUTPUTS_HANDLE].intdesc = {-1, 10000, -1};
     gSpatializeParameterDescs[IPL_FMODCORE_SPATIALIZE_OUTPUT_FORMAT].intdesc = {0, 2, 0, false, gOutputFormatValues};
 }
-
 // --------------------------------------------------------------------------------------------------------------------
 // DSP Description
 // --------------------------------------------------------------------------------------------------------------------
 
-FMOD_DSP_DESCRIPTION gSpatializeDescription = {
+ FMOD_DSP_DESCRIPTION gSpatializeEffect = {
     FMOD_PLUGIN_SDK_VERSION,
     "Steam Audio FMOD Spatializer",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1, 1,
     spatializeCreate,
     spatializeRelease,
@@ -549,18 +547,5 @@ FMOD_DSP_DESCRIPTION gSpatializeDescription = {
     nullptr,
     nullptr
 };
-
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-// Export Function
-// --------------------------------------------------------------------------------------------------------------------
-
-extern "C" {
-
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription()
-{
-    return &SteamAudioFMODCore::gSpatializeDescription;
-}
 
 }

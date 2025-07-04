@@ -320,7 +320,7 @@ FMOD_DSP_PARAMETER_DESC* gMixerReturnParameterDescsArray[IPL_FMODCORE_MIXRETURN_
 
 const char* gMixerReturnOutputFormatValues[] = {"From Mixer", "From Final Out", "From Input"};
 
-void initMixerReturnParameterDescs()
+extern void initMixerReturnParameterDescs()
 {
     for (auto i = 0; i < IPL_FMODCORE_MIXRETURN_NUM_PARAMS; ++i)
     {
@@ -334,46 +334,31 @@ void initMixerReturnParameterDescs()
 // --------------------------------------------------------------------------------------------------------------------
 // DSP Description
 // --------------------------------------------------------------------------------------------------------------------
-
-FMOD_DSP_DESCRIPTION gMixerReturnDescription = {
-    FMOD_PLUGIN_SDK_VERSION,
-    "SA MixerReturn",
-    0x00010000,
-    1, 1,
-    mixerReturnCreate,
-    mixerReturnRelease,
-    mixerReturnReset,
-    nullptr,
-    mixerReturnProcess,
-    nullptr,
-    IPL_FMODCORE_MIXRETURN_NUM_PARAMS,
-    gMixerReturnParameterDescsArray,
-    nullptr,
-    mixerReturnSetParameterInt,
-    mixerReturnSetParameterBool,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr
-};
-
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-// Export Function
-// --------------------------------------------------------------------------------------------------------------------
-
-extern "C" {
-
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription()
-{
-    return &SteamAudioFMODCore::gMixerReturnDescription;
-}
-
+ FMOD_DSP_DESCRIPTION gMixerReturnEffect = {
+        FMOD_PLUGIN_SDK_VERSION,
+        "SA MixerReturn",
+        STEAMAUDIO_FMODCORE_VERSION,
+        1, 1,
+        mixerReturnCreate,
+        mixerReturnRelease,
+        mixerReturnReset,
+        nullptr,
+        mixerReturnProcess,
+        nullptr,
+        IPL_FMODCORE_MIXRETURN_NUM_PARAMS,
+        gMixerReturnParameterDescsArray,
+        nullptr,
+        mixerReturnSetParameterInt,
+        mixerReturnSetParameterBool,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+    };
 }

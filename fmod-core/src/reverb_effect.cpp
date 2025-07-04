@@ -322,46 +322,32 @@ void initReverbParameterDescs()
 // --------------------------------------------------------------------------------------------------------------------
 // DSP Description
 // --------------------------------------------------------------------------------------------------------------------
-
-FMOD_DSP_DESCRIPTION gReverbDescription = {
-    FMOD_PLUGIN_SDK_VERSION,
-    "Steam Audio FMOD Core Reverb",
-    0x00010000,
-    1, 1,
-    reverbCreate,
-    reverbRelease,
-    reverbReset,
-    nullptr,
-    reverbProcess,
-    nullptr,
-    IPL_FMODCORE_REVERB_NUM_PARAMS,
-    gReverbParameterDescsArray,
-    nullptr,
-    reverbSetParameterInt,
-    reverbSetParameterBool,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr
-};
-
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-// Export Function
-// --------------------------------------------------------------------------------------------------------------------
-
-extern "C" {
-
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription()
-{
-    return &SteamAudioFMODCore::gReverbDescription;
-}
+ FMOD_DSP_DESCRIPTION gReverbEffect = {
+        FMOD_PLUGIN_SDK_VERSION,
+        "Steam Audio FMOD Core Reverb",
+        STEAMAUDIO_FMODCORE_VERSION,
+        1, 1,
+        reverbCreate,
+        reverbRelease,
+        reverbReset,
+        nullptr,
+        reverbProcess,
+        nullptr,
+        IPL_FMODCORE_REVERB_NUM_PARAMS,
+        gReverbParameterDescsArray,
+        nullptr,
+        reverbSetParameterInt,
+        reverbSetParameterBool,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+    };
 
 }

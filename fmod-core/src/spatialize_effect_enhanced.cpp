@@ -788,7 +788,7 @@ FMOD_DSP_DESCRIPTION gEnhancedSpatializeEffect =
 {
     FMOD_PLUGIN_SDK_VERSION,
     "Steam Audio Enhanced Spatial",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1,
     1,
     enhancedSpatializeCreate,

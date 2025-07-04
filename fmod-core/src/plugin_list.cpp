@@ -19,17 +19,35 @@
 
 namespace SteamAudioFMODCore {
 
-// --------------------------------------------------------------------------------------------------------------------
-// Plugin Initialization
-// --------------------------------------------------------------------------------------------------------------------
+    static FMOD_PLUGINLIST gPluginList[] =
+    {
+        { FMOD_PLUGINTYPE_DSP, &gSpatializeEffect },
+        { FMOD_PLUGINTYPE_DSP, &gReverbEffect },
+        { FMOD_PLUGINTYPE_DSP, &gMixerReturnEffect },
+        { FMOD_PLUGINTYPE_MAX, nullptr }
+    };
 
-void initializeParameterDescriptions()
-{
-    // Initialize parameter descriptions for all effects
-    initSpatializeParameterDescs();
-    initReverbParameterDescs();
-    initMixerReturnParameterDescs();
-}
+    extern FMOD_DSP_DESCRIPTION gSpatializeEffect;
+    extern FMOD_DSP_DESCRIPTION gMixerReturnEffect;
+    extern FMOD_DSP_DESCRIPTION gReverbEffect;
+
+    FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription()
+    {
+        initSpatializeParameterDescs();
+        return &gSpatializeEffect;
+    }
+
+    FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription()
+    {
+        initReverbParameterDescs();
+        return &gReverbEffect;
+    }
+
+    FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription()
+    {
+        initMixerReturnParameterDescs();
+        return &gMixerReturnEffect; 
+    }
 
 // --------------------------------------------------------------------------------------------------------------------
 // Plugin List
@@ -37,43 +55,7 @@ void initializeParameterDescriptions()
 
 extern "C" {
 
-// Forward declarations of DSP description getters
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription();
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription();
-
 // Plugin list - this is what FMOD will call to get all available plugins
-F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
-{
-    static FMOD_DSP_DESCRIPTION* gPluginList[] = {
-        FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription(),
-        FMOD_SteamAudio_FMODCore_Reverb_GetDSPDescription(),
-        FMOD_SteamAudio_FMODCore_MixerReturn_GetDSPDescription(),
-        nullptr
-    };
-
-    static FMOD_PLUGINLIST gPluginListContainer = {
-        FMOD_PLUGINTYPE_DSP,
-        gPluginList
-    };
-
-    // Initialize parameter descriptions on first call
-    static bool initialized = false;
-    if (!initialized)
-    {
-        initializeParameterDescriptions();
-        initialized = true;
-    }
-
-    return &gPluginListContainer;
-}
-
-// Alternative entry point for individual plugin loading
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetDSPDescription()
-{
-    // Return the spatializer as the default plugin
-    return FMOD_SteamAudio_FMODCore_Spatialize_GetDSPDescription();
-}
 
 // Plugin information
 F_EXPORT unsigned int F_CALL FMODGetNumPlugins()
@@ -99,7 +81,7 @@ F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMODGetPluginDescription(unsigned int inde
 // Plugin version information
 F_EXPORT unsigned int F_CALL FMODGetPluginVersion()
 {
-    return STEAMAUDIO_FMODCORE_VERSION;
+    return FMOD_PLUGIN_SDK_VERSION;
 }
 
 // Plugin name
@@ -109,5 +91,15 @@ F_EXPORT const char* F_CALL FMODGetPluginName()
 }
 
 }
+}
 
+using namespace SteamAudioFMODCore;
+
+
+FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+{
+    initSpatializeParameterDescs();
+    initReverbParameterDescs();
+    initMixerReturnParameterDescs();
+    return gPluginList;
 }

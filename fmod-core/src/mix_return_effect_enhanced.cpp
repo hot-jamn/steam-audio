@@ -534,7 +534,7 @@ FMOD_DSP_DESCRIPTION gEnhancedMixerReturnEffect =
 {
     FMOD_PLUGIN_SDK_VERSION,
     "SA Enhanced MixerReturn",
-    0x00010000,
+    STEAMAUDIO_FMODCORE_VERSION,
     1,
     1,
     enhancedMixerReturnCreate,
