@@ -1942,8 +1942,6 @@ IPLAudioEffectState IPLCALL iplPathEffectApply(IPLPathEffect effect,
     if (!effect)
         return IPL_AUDIOEFFECTSTATE_TAILCOMPLETE;
 
-    if (params->shCoeffs == nullptr)
-        return IPL_AUDIOEFFECTSTATE_TAILCOMPLETE;
     return reinterpret_cast<api::IPathEffect*>(effect)->apply(params, in, out);
 }
 
