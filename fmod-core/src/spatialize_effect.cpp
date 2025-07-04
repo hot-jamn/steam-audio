@@ -109,8 +109,7 @@ FMOD_RESULT F_CALLBACK spatializeCreate(FMOD_DSP_STATE* dsp)
     if (!dsp)
         return FMOD_ERR_INVALID_PARAM;
 
-    auto* state = new SpatializerEffectState();
-    dsp->plugindata = state;
+    dsp->plugindata = new SpatializerEffectState();
 
     return FMOD_OK;
 }
@@ -428,7 +427,7 @@ FMOD_RESULT F_CALLBACK spatializeSetParameterBool(FMOD_DSP_STATE* dsp, int index
 // DSP Parameter Descriptions
 // --------------------------------------------------------------------------------------------------------------------
 
-FMOD_DSP_PARAMETER_DESC gSpatializeParameterDescs[] = {
+FMOD_DSP_PARAMETER_DESC gSpatializeParameterDescs[] = {a
     { FMOD_DSP_PARAMETER_TYPE_DATA, "SourcePos", "", "Position of the source." },
     { FMOD_DSP_PARAMETER_TYPE_DATA, "OverallGain", "", "Overall gain." },
     { FMOD_DSP_PARAMETER_TYPE_INT, "ApplyDA", "", "Apply distance attenuation." },
