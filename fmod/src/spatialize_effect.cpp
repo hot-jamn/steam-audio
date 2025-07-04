@@ -38,6 +38,7 @@ extern std::shared_ptr<SourceManager> gSourceManager;
 namespace SpatializeEffect {
 
    inline void PRINT(const std::string& msg) {
+       return;
        std::ofstream gLogFile("spatialize_log.txt", std::ios::app);
        if (gLogFile.is_open()) {
            gLogFile << msg << std::endl;
@@ -45,7 +46,7 @@ namespace SpatializeEffect {
        else {
            std::cerr << "Error opening file!" << std::endl;
        }
-}
+    }
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
     { FMOD_DSP_PARAMETER_TYPE_DATA, "SourcePos", "", "Position of the source." },
@@ -86,6 +87,7 @@ FMOD_DSP_PARAMETER_DESC gParams[] = {
     { FMOD_DSP_PARAMETER_TYPE_FLOAT, "X", "", "X" },
     { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Y", "", "Y" },
     { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Z", "", "Z" },
+	{ FMOD_DSP_PARAMETER_TYPE_INT, "SampleRate", "", "SampleRate." },
 };
 
 FMOD_DSP_PARAMETER_DESC* gParamsArray[IPL_SPATIALIZE_NUM_PARAMS];
@@ -143,6 +145,7 @@ void initParamDescs()
     gParams[X].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
     gParams[Y].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
     gParams[Z].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+    gParams[SampleRate].intdesc = { 0, 500000, 48000 };
 }
 
 struct State
@@ -206,6 +209,8 @@ struct State
     IPLPathEffectSettings pathEffectSettingsBackup;
     IPLAmbisonicsDecodeEffect ambisonicsEffect;
     IPLAmbisonicsDecodeEffectSettings ambisonicsEffectSettingsBackup;
+
+    int sampleRate;
 };
 
 enum InitFlags
@@ -227,7 +232,11 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
     auto initFlags = INIT_NONE;
 
     IPLAudioSettings audioSettings;
-    state->functions->getsamplerate(state, &audioSettings.samplingRate);
+
+    auto effect = reinterpret_cast<State*>(state->plugindata);
+
+    audioSettings.samplingRate = effect->sampleRate;
+    // state->functions->getsamplerate(state, &audioSettings.samplingRate);
     state->functions->getblocksize(state, reinterpret_cast<unsigned int*>(&audioSettings.frameSize));
 
     PRINT(std::format("Lazy init: numChannelsIn: {}, numChannelsOut: {}, samplingRate: {}, frameSize: {}, !gContext: {}, editor: {}",
@@ -247,8 +256,6 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 		PRINT("HRTF not initialized, skipping initialization.");
         return initFlags;
     }
-
-    auto effect = reinterpret_cast<State*>(state->plugindata);
 
     auto status = IPL_STATUS_SUCCESS;
 
@@ -367,9 +374,11 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
             effectSettings.speakerLayout = speakerLayoutForNumChannels(numChannelsOut);
             effectSettings.hrtf = gHRTF[1];
 
-            status = iplPathEffectCreate(gContext, &audioSettings, &effectSettings, &effect->pathEffect);
-
-            effect->pathEffectSettingsBackup = effectSettings;
+            if (effectSettings.speakerLayout.speakers != nullptr)
+            {
+                status = iplPathEffectCreate(gContext, &audioSettings, &effectSettings, &effect->pathEffect);
+                effect->pathEffectSettingsBackup = effectSettings;
+            }
         }
 
         if (status == IPL_STATUS_SUCCESS)
@@ -509,6 +518,7 @@ void reset(FMOD_DSP_STATE* state)
     effect->prevDirectMixLevel = 1.0f;
     effect->prevReflectionsMixLevel = 0.0f;
     effect->prevPathingMixLevel = 0.0f;
+    effect->sampleRate = 48000;
 }
 
 FMOD_RESULT F_CALL create(FMOD_DSP_STATE* state)
@@ -796,6 +806,9 @@ FMOD_RESULT F_CALL setInt(FMOD_DSP_STATE* state,
         break;
     case IPL_SPATIALIZE_OUTPUT_FORMAT:
         effect->outputFormat = static_cast<ParameterSpeakerFormatType>(value);
+        break;
+    case SampleRate:
+        effect->sampleRate = value;
         break;
     default:
         return FMOD_ERR_INVALID_PARAM;
@@ -1099,9 +1112,8 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
     {
         updateOverallGain(state, sourceCoordinates, listenerCoordinates);
 
-        auto samplingRate = 0;
+        auto samplingRate = effect->sampleRate;
         auto frameSize = 0u;
-        state->functions->getsamplerate(state, &samplingRate);
         state->functions->getblocksize(state, &frameSize);
 
         auto numChannelsIn = inBuffers->buffernumchannels[0];

@@ -53,6 +53,7 @@ std::atomic<bool> gHRTFDisabled{ false };
 std::shared_ptr<SourceManager> gSourceManager;
 
 inline void PRINT(const std::string& msg) {
+    return;
     std::ofstream gLogFile("fmod_log.txt", std::ios::app);
     if (gLogFile.is_open()) {
         gLogFile << msg << std::endl;

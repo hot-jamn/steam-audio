@@ -552,6 +552,7 @@ typedef enum IPLSpatializerParams
     X,
     Y,
     Z,
+    SampleRate,
 
     /** The number of parameters in this effect. */
     IPL_SPATIALIZE_NUM_PARAMS
