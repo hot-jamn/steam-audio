@@ -38,9 +38,13 @@ extern std::shared_ptr<SourceManager> gSourceManager;
 namespace SpatializeEffect {
 
    inline void PRINT(const std::string& msg) {
-    auto formatted = std::format("SpatializeEffect: {}", msg);
-    std::wstring ws(formatted.begin(), formatted.end());
-    OutputDebugStringW(ws.c_str());
+       std::ofstream gLogFile("spatialize_log.txt", std::ios::app);
+       if (gLogFile.is_open()) {
+           gLogFile << msg << std::endl;
+       }
+       else {
+           std::cerr << "Error opening file!" << std::endl;
+       }
 }
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
@@ -89,6 +93,7 @@ const char* gHRTFInterpolationValues[] = {"Nearest", "Bilinear"};
 const char* gTransmissionTypeValues[] = {"Frequency Independent", "Frequency Dependent"};
 const char* gRolloffTypeValues[] = {"Linear Squared", "Linear", "Inverse", "Inverse Squared", "Custom"};
 const char* gOutputFormatValues[] = {"From Mixer", "From Final Out", "From Input"};
+std::ofstream gLogFile;
 
 void initParamDescs()
 {
@@ -212,11 +217,12 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 {
     auto initFlags = INIT_NONE;
 
-    PRINT("init");
-
     IPLAudioSettings audioSettings;
     state->functions->getsamplerate(state, &audioSettings.samplingRate);
     state->functions->getblocksize(state, reinterpret_cast<unsigned int*>(&audioSettings.frameSize));
+
+    PRINT(std::format("Lazy init: numChannelsIn: {}, numChannelsOut: {}, samplingRate: {}, frameSize: {}, !gContext: {}, editor: {}",
+		numChannelsIn, numChannelsOut, audioSettings.samplingRate, audioSettings.frameSize, !gContext, isRunningInEditor()));
 
     if (!gContext && isRunningInEditor())
     {
@@ -224,10 +230,14 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
     }
 
     if (!gContext)
+    {
+		PRINT("Failed to initialize context, skipping initialization.");
         return initFlags;
-
-    if (!gHRTF[1])
+    }
+    if (!gHRTF[1]) {
+		PRINT("HRTF not initialized, skipping initialization.");
         return initFlags;
+    }
 
     auto effect = reinterpret_cast<State*>(state->plugindata);
 
@@ -261,9 +271,16 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
                 status = iplBinauralEffectCreate(gContext, &audioSettings, &effectSettings, &effect->binauralEffect);
             }
         }
+        else {
+            PRINT("Failed to create panning effect, skipping binaural effect initialization.");
+			return initFlags;
+        }
 
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_BINAURALEFFECT);
+        else {
+            PRINT("Failed to create binaural effect, skipping further initialization.");
+		}
     }
 
     if (numChannelsIn > 0)
@@ -278,6 +295,7 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
         if (!effect->directEffect)
         {
+			PRINT(std::format("Creating direct effect with numChannelsIn: {}", numChannelsIn));
             IPLDirectEffectSettings effectSettings;
             effectSettings.numChannels = numChannelsIn;
 
@@ -288,6 +306,8 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_DIRECTEFFECT);
+        else
+			PRINT("Failed to create direct effect");
     }
 
     if (effect->applyReflections && gIsSimulationSettingsValid)
@@ -315,6 +335,10 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_REFLECTIONEFFECT);
     }
+    else
+    {
+        PRINT(std::format("Skipping reflection effect initialization due to applyReflections being {} or simulation settings invalid.", effect->applyReflections));
+	}
 
     if (effect->applyPathing && gIsSimulationSettingsValid)
     {
@@ -342,6 +366,10 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_PATHEFFECT);
     }
+    else
+    {
+        PRINT(std::format("Skipping path effect initialization due to applyPathing being {} or simulation settings invalid.", effect->applyPathing));
+    }
 
     if (numChannelsOut > 0 && gIsSimulationSettingsValid)
     {
@@ -368,6 +396,9 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_AMBISONICSEFFECT);
     }
+    else     {
+        PRINT(std::format("Skipping ambisonics effect initialization due to numChannelsOut being {} or simulation settings invalid.", numChannelsOut));
+	}
 
     if (numChannelsIn > 0 && numChannelsOut > 0)
     {
@@ -415,6 +446,9 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
             initFlags = success == IPL_STATUS_SUCCESS ? static_cast<InitFlags>(initFlags | INIT_REFLECTIONAUDIOBUFFERS) : initFlags;
         }
+    }
+    else {
+		PRINT(std::format("Skipping audio buffer initialization due to numChannelsIn: {} or numChannelsOut: {}.", numChannelsIn, numChannelsOut));
     }
 
     return initFlags;
@@ -473,6 +507,7 @@ FMOD_RESULT F_CALL create(FMOD_DSP_STATE* state)
     state->plugindata = new State();
     reset(state);
     lazyInit(state, 0, 0);
+    
     return FMOD_OK;
 }
 
