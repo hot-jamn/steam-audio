@@ -22,3 +22,4 @@ core/deps/*
 .vs
 .idea/
 fmod-core/windows-vs2022-x64/*
+.kilocode/mcp.json
