@@ -214,6 +214,7 @@ if (STEAMAUDIOFMOD_BUILD_DOCS)
 endif()
 
 
+
 #
 # PACKAGING
 #
@@ -242,3 +243,11 @@ set(CPACK_INSTALLED_DIRECTORIES
 )
 
 include(CPack)
+
+find_package(Python3 REQUIRED)
+
+add_custom_target(run_build_py
+    COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=$ENV{PYTHONPATH} ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/build/build.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/build
+    COMMENT "Running build.py"
+)

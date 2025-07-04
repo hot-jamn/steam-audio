@@ -1,0 +1,23 @@
+# ninja log v6
+7	64	7733460864859099	src/CMakeFiles/phonon_fmod.dir/phonon_fmod.rc.res	d84048e404464c11
+611	1098	7733460870890925	src/CMakeFiles/phonon_fmod.dir/steamaudio_fmod.cpp.obj	de2651ce9cc7fbdb
+1215	1588	7733460879538196	src/phonon_fmod.dll	c49d6053de98e2dd
+4	608	7733460864823879	src/CMakeFiles/phonon_fmod.dir/cmake_pch.cxx.obj	ccad7ae5aefcdc01
+608	667	7733460870860788	src/CMakeFiles/phonon_fmod.dir/library.cpp.obj	d11fb68cd85c98ec
+616	891	7733460870939858	src/CMakeFiles/phonon_fmod.dir/reverb_effect.cpp.obj	d05c1062eb56f85
+618	903	7733460870969854	src/CMakeFiles/phonon_fmod.dir/mix_return_effect.cpp.obj	79b11086c175eea4
+614	1215	7733460870919954	src/CMakeFiles/phonon_fmod.dir/spatialize_effect.cpp.obj	c0a901703e1d3ec3
+1215	1588	7733460879538196	src/phonon_fmod.lib	c49d6053de98e2dd
+8	26	7733460829015465	clean	8c45b54705a541e8
+14	29	7733476311860195	clean	8c45b54705a541e8
+4	6430	7733476312103107	CMakeFiles/run_build_py	f910a020792d8b84
+4	6430	7733476312103107	D:/hot-jamn/steam-audio/fmod/out/build/x64-Debug/CMakeFiles/run_build_py	f910a020792d8b84
+18	34	7733517633418949	clean	8c45b54705a541e8
+3	12	7733519443600369	clean	8c45b54705a541e8
+4	2437	7733519443778299	CMakeFiles/run_build_py	f910a020792d8b84
+4	2437	7733519443778299	D:/hot-jamn/steam-audio/fmod/out/build/x64-Debug/CMakeFiles/run_build_py	f910a020792d8b84
+30	7464	7733524966206362	CMakeFiles/run_build_py	f910a020792d8b84
+30	7464	7733524966206362	D:/hot-jamn/steam-audio/fmod/out/build/x64-Debug/CMakeFiles/run_build_py	f910a020792d8b84
+13	43	7733525112190839	clean	8c45b54705a541e8
+13	2595	7733525112815012	CMakeFiles/run_build_py	f910a020792d8b84
+13	2595	7733525112815012	D:/hot-jamn/steam-audio/fmod/out/build/x64-Debug/CMakeFiles/run_build_py	f910a020792d8b84

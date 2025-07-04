@@ -38,9 +38,13 @@ extern std::shared_ptr<SourceManager> gSourceManager;
 namespace SpatializeEffect {
 
    inline void PRINT(const std::string& msg) {
-    auto formatted = std::format("SpatializeEffect: {}", msg);
-    std::wstring ws(formatted.begin(), formatted.end());
-    OutputDebugStringW(ws.c_str());
+       std::ofstream gLogFile("spatialize_log.txt", std::ios::app);
+       if (gLogFile.is_open()) {
+           gLogFile << msg << std::endl;
+       }
+       else {
+           std::cerr << "Error opening file!" << std::endl;
+       }
 }
 
 FMOD_DSP_PARAMETER_DESC gParams[] = {
@@ -79,6 +83,9 @@ FMOD_DSP_PARAMETER_DESC gParams[] = {
     { FMOD_DSP_PARAMETER_TYPE_DATA, "DistRange", "", "Distance attenuation range." },
     { FMOD_DSP_PARAMETER_TYPE_INT, "SimOutHandle", "", "Simulation outputs handle." },
     { FMOD_DSP_PARAMETER_TYPE_INT, "OutputFormat", "", "Output Format" },
+    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "X", "", "X" },
+    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Y", "", "Y" },
+    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "Z", "", "Z" },
 };
 
 FMOD_DSP_PARAMETER_DESC* gParamsArray[IPL_SPATIALIZE_NUM_PARAMS];
@@ -89,6 +96,7 @@ const char* gHRTFInterpolationValues[] = {"Nearest", "Bilinear"};
 const char* gTransmissionTypeValues[] = {"Frequency Independent", "Frequency Dependent"};
 const char* gRolloffTypeValues[] = {"Linear Squared", "Linear", "Inverse", "Inverse Squared", "Custom"};
 const char* gOutputFormatValues[] = {"From Mixer", "From Final Out", "From Input"};
+std::ofstream gLogFile;
 
 void initParamDescs()
 {
@@ -132,6 +140,9 @@ void initParamDescs()
     gParams[IPL_SPATIALIZE_DISTANCE_ATTENUATION_RANGE].datadesc = {FMOD_DSP_PARAMETER_DATA_TYPE_ATTENUATION_RANGE};
     gParams[IPL_SPATIALIZE_SIMULATION_OUTPUTS_HANDLE].intdesc = {-1, 10000, -1};
     gParams[IPL_SPATIALIZE_OUTPUT_FORMAT].intdesc = {0, 2, 0, false, gOutputFormatValues};
+    gParams[X].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+    gParams[Y].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
+    gParams[Z].floatdesc = { -100000.0f, 10000.0f, 0.0f, };
 }
 
 struct State
@@ -143,6 +154,9 @@ struct State
     ParameterApplyType applyDirectivity;
     ParameterApplyType applyOcclusion;
     ParameterApplyType applyTransmission;
+    float x;
+    float y;
+    float z;
     bool applyReflections;
     bool applyPathing;
     bool directBinaural;
@@ -212,11 +226,12 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 {
     auto initFlags = INIT_NONE;
 
-    PRINT("init");
-
     IPLAudioSettings audioSettings;
     state->functions->getsamplerate(state, &audioSettings.samplingRate);
     state->functions->getblocksize(state, reinterpret_cast<unsigned int*>(&audioSettings.frameSize));
+
+    PRINT(std::format("Lazy init: numChannelsIn: {}, numChannelsOut: {}, samplingRate: {}, frameSize: {}, !gContext: {}, editor: {}",
+		numChannelsIn, numChannelsOut, audioSettings.samplingRate, audioSettings.frameSize, !gContext, isRunningInEditor()));
 
     if (!gContext && isRunningInEditor())
     {
@@ -224,10 +239,14 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
     }
 
     if (!gContext)
+    {
+		PRINT("Failed to initialize context, skipping initialization.");
         return initFlags;
-
-    if (!gHRTF[1])
+    }
+    if (!gHRTF[1]) {
+		PRINT("HRTF not initialized, skipping initialization.");
         return initFlags;
+    }
 
     auto effect = reinterpret_cast<State*>(state->plugindata);
 
@@ -261,9 +280,16 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
                 status = iplBinauralEffectCreate(gContext, &audioSettings, &effectSettings, &effect->binauralEffect);
             }
         }
+        else {
+            PRINT("Failed to create panning effect, skipping binaural effect initialization.");
+			return initFlags;
+        }
 
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_BINAURALEFFECT);
+        else {
+            PRINT("Failed to create binaural effect, skipping further initialization.");
+		}
     }
 
     if (numChannelsIn > 0)
@@ -278,6 +304,7 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
         if (!effect->directEffect)
         {
+			PRINT(std::format("Creating direct effect with numChannelsIn: {}", numChannelsIn));
             IPLDirectEffectSettings effectSettings;
             effectSettings.numChannels = numChannelsIn;
 
@@ -288,6 +315,8 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_DIRECTEFFECT);
+        else
+			PRINT("Failed to create direct effect");
     }
 
     if (effect->applyReflections && gIsSimulationSettingsValid)
@@ -315,6 +344,10 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_REFLECTIONEFFECT);
     }
+    else
+    {
+        PRINT(std::format("Skipping reflection effect initialization due to applyReflections being {} or simulation settings invalid.", effect->applyReflections));
+	}
 
     if (effect->applyPathing && gIsSimulationSettingsValid)
     {
@@ -342,6 +375,10 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_PATHEFFECT);
     }
+    else
+    {
+        PRINT(std::format("Skipping path effect initialization due to applyPathing being {} or simulation settings invalid.", effect->applyPathing));
+    }
 
     if (numChannelsOut > 0 && gIsSimulationSettingsValid)
     {
@@ -368,6 +405,9 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
         if (status == IPL_STATUS_SUCCESS)
             initFlags = static_cast<InitFlags>(initFlags | INIT_AMBISONICSEFFECT);
     }
+    else     {
+        PRINT(std::format("Skipping ambisonics effect initialization due to numChannelsOut being {} or simulation settings invalid.", numChannelsOut));
+	}
 
     if (numChannelsIn > 0 && numChannelsOut > 0)
     {
@@ -415,6 +455,9 @@ InitFlags lazyInit(FMOD_DSP_STATE* state,
 
             initFlags = success == IPL_STATUS_SUCCESS ? static_cast<InitFlags>(initFlags | INIT_REFLECTIONAUDIOBUFFERS) : initFlags;
         }
+    }
+    else {
+		PRINT(std::format("Skipping audio buffer initialization due to numChannelsIn: {} or numChannelsOut: {}.", numChannelsIn, numChannelsOut));
     }
 
     return initFlags;
@@ -473,6 +516,7 @@ FMOD_RESULT F_CALL create(FMOD_DSP_STATE* state)
     state->plugindata = new State();
     reset(state);
     lazyInit(state, 0, 0);
+    
     return FMOD_OK;
 }
 
@@ -816,6 +860,15 @@ FMOD_RESULT F_CALL setFloat(FMOD_DSP_STATE* state,
     case IPL_SPATIALIZE_PATHING_MIXLEVEL:
         effect->pathingMixLevel = value;
         break;
+    case X:
+        effect->x = value;
+		break;
+    case Y:
+        effect->y = value;
+        break;
+    case Z:
+        effect->z = value;
+        break;
     default:
         return FMOD_ERR_INVALID_PARAM;
     }
@@ -856,6 +909,7 @@ IPLDirectEffectParams getDirectParams(FMOD_DSP_STATE* state,
                                       bool updatingOverallGain)
 {
     auto effect = reinterpret_cast<State*>(state->plugindata);
+    source.origin = { effect->x, effect->y, effect->z };
 
     auto hasSource = false;
     IPLSimulationOutputs simulationOutputs{};
@@ -992,6 +1046,7 @@ void updateOverallGain(FMOD_DSP_STATE* state,
                        IPLCoordinateSpace3 listener)
 {
     auto effect = reinterpret_cast<State*>(state->plugindata);
+    source.origin = { effect->x, effect->y, effect->z };
     auto directParams = getDirectParams(state, source, listener, true);
 
     auto level = effect->directMixLevel;
@@ -1018,6 +1073,7 @@ FMOD_RESULT F_CALL process(FMOD_DSP_STATE* state,
                            FMOD_DSP_PROCESS_OPERATION operation)
 {
     auto effect = reinterpret_cast<State*>(state->plugindata);
+    effect->source.absolute = { effect->x, effect->y, effect->z };
 
     auto sourceCoordinates = calcCoordinates(effect->source.absolute);
     PRINT(std::format("Spatialize: source coordinates: ({}, {}, {})", sourceCoordinates.origin.x, sourceCoordinates.origin.y, sourceCoordinates.origin.z));

@@ -549,6 +549,10 @@ typedef enum IPLSpatializerParams
      */
     IPL_SPATIALIZE_OUTPUT_FORMAT,
 
+    X,
+    Y,
+    Z,
+
     /** The number of parameters in this effect. */
     IPL_SPATIALIZE_NUM_PARAMS
 } IPLSpatializerParams;
