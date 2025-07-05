@@ -36,32 +36,31 @@ namespace SteamAudioFMODCore {
     namespace ReverbEffect { extern void initReverbParameterDescs(); }
 }
 
-extern "C" {
-
-F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+extern "C" 
 {
-    SteamAudioFMODCore::SpatializeEffect::initSpatializeParameterDescs();
-    SteamAudioFMODCore::MixerReturnEffect::initMixerReturnParameterDescs();
-    SteamAudioFMODCore::ReverbEffect::initReverbParameterDescs();
-    return SteamAudioFMODCore::gPluginList;
-}
+    F_EXPORT FMOD_PLUGINLIST* F_CALL FMODGetPluginDescriptionList()
+    {
+        SteamAudioFMODCore::SpatializeEffect::initSpatializeParameterDescs();
+        SteamAudioFMODCore::MixerReturnEffect::initMixerReturnParameterDescs();
+        SteamAudioFMODCore::ReverbEffect::initReverbParameterDescs();
+        return SteamAudioFMODCore::gPluginList;
+    }
 
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_Spatialize_GetDSPDescription()
-{
-    SteamAudioFMODCore::SpatializeEffect::initSpatializeParameterDescs();
-    return &SteamAudioFMODCore::gSpatializeEffect;
-}
+    F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_Spatialize_GetDSPDescription()
+    {
+        SteamAudioFMODCore::SpatializeEffect::initSpatializeParameterDescs();
+        return &SteamAudioFMODCore::gSpatializeEffect;
+    }
 
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_MixerReturn_GetDSPDescription()
-{
-    SteamAudioFMODCore::MixerReturnEffect::initMixerReturnParameterDescs();
-    return &SteamAudioFMODCore::gMixerReturnEffect;
-}
+    F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_MixerReturn_GetDSPDescription()
+    {
+        SteamAudioFMODCore::MixerReturnEffect::initMixerReturnParameterDescs();
+        return &SteamAudioFMODCore::gMixerReturnEffect;
+    }
 
-F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_Reverb_GetDSPDescription()
-{
-    SteamAudioFMODCore::ReverbEffect::initReverbParameterDescs();
-    return &SteamAudioFMODCore::gReverbEffect;
-}
-
+    F_EXPORT FMOD_DSP_DESCRIPTION* F_CALL FMOD_SteamAudio_Reverb_GetDSPDescription()
+    {
+        SteamAudioFMODCore::ReverbEffect::initReverbParameterDescs();
+        return &SteamAudioFMODCore::gReverbEffect;
+    }
 }

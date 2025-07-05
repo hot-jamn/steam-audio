@@ -183,8 +183,6 @@ private:
     std::mutex mSourceMutex;
 };
 
-extern SourceManager gSourceManager;
-
 // Context sharing with Unity
 extern std::atomic<IPLContext> gSharedContext;
 extern std::atomic<bool> gContextShared;
@@ -277,8 +275,6 @@ extern "C" {
     F_EXPORT IPLint32 F_CALL iplFMODAddSource(IPLSource source);
     F_EXPORT void F_CALL iplFMODRemoveSource(IPLint32 handle);
     F_EXPORT void F_CALL iplFMODSetHRTFDisabled(bool disabled);
-    F_EXPORT void F_CALL iplFMODSetSharedContext(IPLContext context);
-    F_EXPORT IPLContext F_CALL iplFMODGetSharedContext();
 }
 
 namespace SteamAudioFMODCore {

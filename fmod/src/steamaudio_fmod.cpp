@@ -149,12 +149,16 @@ void applyVolumeRamp(float startVolume,
                      int numSamples,
                      float* buffer)
 {
+    if (numSamples <= 0)
+    return;
+
+    auto volumeStep = (endVolume - startVolume) / numSamples;
+    auto currentVolume = startVolume;
+
     for (auto i = 0; i < numSamples; ++i)
     {
-        auto fraction = static_cast<float>(i) / static_cast<float>(numSamples);
-        auto volume = fraction * endVolume + (1.0f - fraction) * startVolume;
-
-        buffer[i] *= volume;
+        buffer[i] *= currentVolume;
+        currentVolume += volumeStep;
     }
 }
 
