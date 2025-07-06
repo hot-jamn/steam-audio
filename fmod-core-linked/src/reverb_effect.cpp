@@ -1,4 +1,3 @@
-
 //
 // Copyright 2017-2023 Valve Corporation.
 //
@@ -18,484 +17,497 @@
 #include "pch.h"
 #include "steamaudio_fmodcore.h"
 
-namespace SteamAudioFMODCore {
-
-// --------------------------------------------------------------------------------------------------------------------
-// Reverb Effect State
-// --------------------------------------------------------------------------------------------------------------------
-
-struct ReverbEffectState
+namespace SteamAudioFMODCore
 {
-    // Steam Audio objects
-    IPLReflectionEffect reflectionEffect;
-    IPLAmbisonicsDecodeEffect ambisonicsEffect;
-    IPLBinauralEffect binauralEffect;
 
-    // Audio buffers
-    IPLAudioBuffer ambisonicsBuffer;
-    IPLAudioBuffer monoBuffer;
-    IPLAudioBuffer outputBuffer;
+    // --------------------------------------------------------------------------------------------------------------------
+    // Reverb Effect State
+    // --------------------------------------------------------------------------------------------------------------------
 
-    // Parameters
-    bool binaural;
-    float mixLevel;
-    int32_t simOutHandle;
-    ParameterSpeakerFormatType outputFormatType;
-
-    // State tracking
-    bool initialized;
-    int currentHRTFIndex;
-    int currentReverbSourceIndex;
-
-    ReverbEffectState()
-        : reflectionEffect(nullptr)
-        , ambisonicsEffect(nullptr)
-        , binauralEffect(nullptr)
-        , ambisonicsBuffer{}
-        , monoBuffer{}
-        , outputBuffer{}
-        , binaural(false)
-        , mixLevel(1.0f)
-        , simOutHandle(-1)
-        , outputFormatType(PARAMETER_FROM_MIXER)
-        , initialized(false)
-        , currentHRTFIndex(0)
-        , currentReverbSourceIndex(0)
+    struct ReverbEffectState
     {
-    }
-};
+        // Steam Audio objects
+        bool binaural;
+        ParameterSpeakerFormatType outputFormat;
 
-// --------------------------------------------------------------------------------------------------------------------
-// DSP Callbacks
-// --------------------------------------------------------------------------------------------------------------------
+        IPLAudioBuffer inBuffer;
+        IPLAudioBuffer monoBuffer;
+        IPLAudioBuffer reflectionsBuffer;
+        IPLAudioBuffer outBuffer;
 
-FMOD_RESULT F_CALLBACK reverbCreate(FMOD_DSP_STATE* dsp);
-FMOD_RESULT F_CALLBACK reverbRelease(FMOD_DSP_STATE* dsp);
-FMOD_RESULT F_CALLBACK reverbReset(FMOD_DSP_STATE* dsp);
-FMOD_RESULT F_CALLBACK reverbProcess(FMOD_DSP_STATE* dsp,
-                                     unsigned int length,
-                                     const FMOD_DSP_BUFFER_ARRAY* inBuffers,
-                                     FMOD_DSP_BUFFER_ARRAY* outBuffers,
-                                     FMOD_BOOL inputsIdle,
-                                     FMOD_DSP_PROCESS_OPERATION op);
-FMOD_RESULT F_CALLBACK reverbSetParameterFloat(FMOD_DSP_STATE* dsp, int index, float value);
-FMOD_RESULT F_CALLBACK reverbSetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL value);
-FMOD_RESULT F_CALLBACK reverbSetParameterInt(FMOD_DSP_STATE* dsp, int index, int value);
-FMOD_RESULT F_CALLBACK reverbGetParameterFloat(FMOD_DSP_STATE* dsp, int index, float* value, char* valuestr);
-FMOD_RESULT F_CALLBACK reverbGetParameterInt(FMOD_DSP_STATE* dsp, int index, int* value, char* valuestr);
-FMOD_RESULT F_CALLBACK reverbGetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL* value, char* valuestr);
+        IPLReflectionEffect reflectionEffect;
+        IPLReflectionEffectSettings reflectionEffectSettingsBackup;
+        IPLAmbisonicsDecodeEffect ambisonicsEffect;
+        IPLAmbisonicsDecodeEffectSettings ambisonicsEffectSettingsBackup;
 
-// --------------------------------------------------------------------------------------------------------------------
-// DSP Parameter Descriptions
-// --------------------------------------------------------------------------------------------------------------------
+        float mixLevel;
+        int sampleRate;
+        int frameSize;
 
-FMOD_DSP_PARAMETER_DESC gReverbParameterDescs[] = {
-    { FMOD_DSP_PARAMETER_TYPE_BOOL, "Binaural", "", "Apply HRTF to reverb." },
-    { FMOD_DSP_PARAMETER_TYPE_FLOAT, "MixLevel", "", "Reverb mix level." },
-    { FMOD_DSP_PARAMETER_TYPE_INT, "SimOutHandle", "", "Simulation outputs handle." },
-    { FMOD_DSP_PARAMETER_TYPE_INT, "OutputFormat", "", "Output Format" },
-};
-
-FMOD_DSP_PARAMETER_DESC* gReverbParameterDescsArray[IPL_FMODCORE_REVERB_NUM_PARAMS];
-
-const char* gReverbOutputFormatValues[] = {"From Mixer", "From Final Out", "From Input"};
-
-FMOD_RESULT F_CALLBACK reverbCreate(FMOD_DSP_STATE* dsp)
-{
-    if (!dsp)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = new ReverbEffectState();
-    dsp->plugindata = state;
-
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbRelease(FMOD_DSP_STATE* dsp)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    // Clean up Steam Audio objects
-    if (state->binauralEffect)
-        iplBinauralEffectRelease(&state->binauralEffect);
-    if (state->ambisonicsEffect)
-        iplAmbisonicsDecodeEffectRelease(&state->ambisonicsEffect);
-    if (state->reflectionEffect)
-        iplReflectionEffectRelease(&state->reflectionEffect);
-
-    // Clean up audio buffers
-    if (state->ambisonicsBuffer.data)
-        iplAudioBufferFree(gContext, &state->ambisonicsBuffer);
-    if (state->monoBuffer.data)
-        iplAudioBufferFree(gContext, &state->monoBuffer);
-    if (state->outputBuffer.data)
-        iplAudioBufferFree(gContext, &state->outputBuffer);
-
-    delete state;
-    dsp->plugindata = nullptr;
-
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbReset(FMOD_DSP_STATE* dsp)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-    
-    // Reset effects
-    if (state->reflectionEffect)
-        iplReflectionEffectReset(state->reflectionEffect);
-    if (state->ambisonicsEffect)
-        iplAmbisonicsDecodeEffectReset(state->ambisonicsEffect);
-    if (state->binauralEffect)
-        iplBinauralEffectReset(state->binauralEffect);
-
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbProcess(FMOD_DSP_STATE* dsp,
-                                     unsigned int length,
-                                     const FMOD_DSP_BUFFER_ARRAY* inBuffers,
-                                     FMOD_DSP_BUFFER_ARRAY* outBuffers,
-                                     FMOD_BOOL inputsIdle,
-                                     FMOD_DSP_PROCESS_OPERATION op)
-{
-    if (!dsp || !dsp->plugindata || !inBuffers || !outBuffers)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    if (op == FMOD_DSP_PROCESS_QUERY)
-    {
-        if (!initFmodOutBufferFormat(inBuffers, outBuffers, dsp, state->outputFormatType))
-            return FMOD_ERR_FORMAT;
-        return FMOD_OK;
-    }
-
-    if (!gContext || inputsIdle)
-    {
-        if (inBuffers->buffers[0] != outBuffers->buffers[0])
+        ReverbEffectState()
+            : reflectionEffect(nullptr)
+            , ambisonicsEffect(nullptr)
+            , inBuffer{}
+            , monoBuffer{}
+            , outBuffer{}
+            , reflectionsBuffer{}
+            , binaural(false)
+            , mixLevel(1.0f)
+            , sampleRate(48000)
+            , frameSize(512)
+			, outputFormat(PARAMETER_FROM_MIXER) // Default output format
+            , reflectionEffectSettingsBackup{}
+            , ambisonicsEffectSettingsBackup{} // Initialize ambisonicsEffectSettingsBackup
         {
-            memcpy(outBuffers->buffers[0], inBuffers->buffers[0],
-                   length * inBuffers->buffernumchannels[0] * sizeof(float));
         }
+    };
+
+    // --------------------------------------------------------------------------------------------------------------------
+    // DSP Callbacks
+    // --------------------------------------------------------------------------------------------------------------------
+
+    FMOD_RESULT F_CALLBACK reverbCreate(FMOD_DSP_STATE* dsp);
+    FMOD_RESULT F_CALLBACK reverbRelease(FMOD_DSP_STATE* dsp);
+    FMOD_RESULT F_CALLBACK reverbReset(FMOD_DSP_STATE* dsp);
+    FMOD_RESULT F_CALLBACK reverbProcess(FMOD_DSP_STATE* dsp, unsigned int length, const FMOD_DSP_BUFFER_ARRAY* inBuffers, FMOD_DSP_BUFFER_ARRAY* outBuffers, FMOD_BOOL inputsIdle, FMOD_DSP_PROCESS_OPERATION op);
+    FMOD_RESULT F_CALLBACK reverbSetParameterFloat(FMOD_DSP_STATE* dsp, int index, float value);
+    FMOD_RESULT F_CALLBACK reverbSetParameterInt(FMOD_DSP_STATE* dsp, int index, int value);
+    FMOD_RESULT F_CALLBACK reverbSetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL value);
+
+    // --------------------------------------------------------------------------------------------------------------------
+    // DSP Parameter Descriptions
+    // --------------------------------------------------------------------------------------------------------------------
+
+
+    FMOD_DSP_PARAMETER_DESC gReverbParameterDescs[] = {
+        { FMOD_DSP_PARAMETER_TYPE_BOOL, "Binaural", "", "Apply HRTF to reverb." },
+        { FMOD_DSP_PARAMETER_TYPE_FLOAT, "MixLevel", "", "Reverb mix level." },
+        { FMOD_DSP_PARAMETER_TYPE_INT, "SampleRate", "", "Sample Rate" },
+        { FMOD_DSP_PARAMETER_TYPE_INT, "FrameSize", "", "Frame Size" },
+        { FMOD_DSP_PARAMETER_TYPE_INT, "OutputFormat", "", "Output Format" },
+    };
+    enum InitFlags
+    {
+        INIT_NONE = 0,
+        INIT_AUDIOBUFFERS = 1 << 0,
+        INIT_REFLECTIONEFFECT = 1 << 1,
+        INIT_AMBISONICSEFFECT = 1 << 2
+    };
+
+    InitFlags lazyInit(FMOD_DSP_STATE* state,
+        int numChannelsIn,
+        int numChannelsOut)
+    {
+        auto initFlags = INIT_NONE;
+
+        if (!gContext)
+            return initFlags;
+
+        if (!gHRTF[1])
+            return initFlags;
+
+        auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+
+        IPLAudioSettings audioSettings;
+        audioSettings.samplingRate = effect->sampleRate;
+        audioSettings.frameSize = effect->frameSize;
+
+        auto status = IPL_STATUS_SUCCESS;
+
+        if (gIsSimulationSettingsValid)
+        {
+            status = IPL_STATUS_SUCCESS;
+
+            if (effect->reflectionEffect && effect->reflectionEffectSettingsBackup.numChannels != numChannelsForOrder(gSimulationSettings.maxOrder))
+            {
+                iplReflectionEffectReset(effect->reflectionEffect);
+                iplReflectionEffectRelease(&effect->reflectionEffect);
+            }
+
+            if (!effect->reflectionEffect)
+            {
+                IPLReflectionEffectSettings effectSettings;
+                effectSettings.type = gSimulationSettings.reflectionType;
+                effectSettings.irSize = numSamplesForDuration(gSimulationSettings.maxDuration, audioSettings.samplingRate);
+                effectSettings.numChannels = numChannelsForOrder(gSimulationSettings.maxOrder);
+
+                status = iplReflectionEffectCreate(gContext, &audioSettings, &effectSettings, &effect->reflectionEffect);
+
+                effect->reflectionEffectSettingsBackup = effectSettings;
+            }
+
+            if (status == IPL_STATUS_SUCCESS)
+                initFlags = static_cast<InitFlags>(initFlags | INIT_REFLECTIONEFFECT);
+        }
+
+        if (numChannelsOut > 0 && gIsSimulationSettingsValid)
+        {
+            status = IPL_STATUS_SUCCESS;
+
+            if (effect->ambisonicsEffect && effect->ambisonicsEffectSettingsBackup.speakerLayout.type != speakerLayoutForNumChannels(numChannelsOut).type)
+            {
+                iplAmbisonicsDecodeEffectReset(effect->ambisonicsEffect);
+                iplAmbisonicsDecodeEffectRelease(&effect->ambisonicsEffect);
+            }
+
+            if (!effect->ambisonicsEffect)
+            {
+                IPLAmbisonicsDecodeEffectSettings effectSettings;
+                effectSettings.speakerLayout = speakerLayoutForNumChannels(numChannelsOut);
+                effectSettings.hrtf = gHRTF[1];
+                effectSettings.maxOrder = gSimulationSettings.maxOrder;
+
+                status = iplAmbisonicsDecodeEffectCreate(gContext, &audioSettings, &effectSettings, &effect->ambisonicsEffect);
+
+                effect->ambisonicsEffectSettingsBackup = effectSettings;
+            }
+
+            if (status == IPL_STATUS_SUCCESS)
+                initFlags = static_cast<InitFlags>(initFlags | INIT_AMBISONICSEFFECT);
+        }
+
+        if (numChannelsIn > 0 && numChannelsOut > 0)
+        {
+            int success = IPL_STATUS_SUCCESS;
+
+            auto numAmbisonicChannels = numChannelsForOrder(gSimulationSettings.maxOrder);
+
+            if (effect->inBuffer.data && effect->inBuffer.numChannels != numChannelsIn)
+                iplAudioBufferFree(gContext, &effect->inBuffer);
+
+            if (!effect->inBuffer.data)
+                success |= iplAudioBufferAllocate(gContext, numChannelsIn, audioSettings.frameSize, &effect->inBuffer);
+
+            if (!effect->monoBuffer.data)
+                success |= iplAudioBufferAllocate(gContext, 1, audioSettings.frameSize, &effect->monoBuffer);
+
+            if (effect->reflectionsBuffer.data && effect->reflectionsBuffer.numChannels != numAmbisonicChannels)
+                iplAudioBufferFree(gContext, &effect->reflectionsBuffer);
+
+            if (!effect->reflectionsBuffer.data)
+                success |= iplAudioBufferAllocate(gContext, numAmbisonicChannels, audioSettings.frameSize, &effect->reflectionsBuffer);
+
+            if (effect->outBuffer.data && effect->outBuffer.numChannels != numChannelsOut)
+                iplAudioBufferFree(gContext, &effect->outBuffer);
+
+            if (!effect->outBuffer.data)
+                success |= iplAudioBufferAllocate(gContext, numChannelsOut, audioSettings.frameSize, &effect->outBuffer);
+
+            initFlags = success == IPL_STATUS_SUCCESS ? static_cast<InitFlags>(initFlags | INIT_AUDIOBUFFERS) : initFlags;
+        }
+
+        return initFlags;
+    }
+
+    FMOD_DSP_PARAMETER_DESC* gReverbParameterDescsArray[IPL_FMODCORE_REVERB_NUM_PARAMS];
+
+    const char* gReverbOutputFormatValues[] = {"From Mixer", "From Final Out", "From Input"};
+
+    FMOD_RESULT F_CALLBACK reverbCreate(FMOD_DSP_STATE* state)
+    {
+        state->plugindata = new ReverbEffectState();
+        reverbReset(state);
+        lazyInit(state, 0, 0);
         return FMOD_OK;
     }
 
-    IPLAudioSettings audioSettings;
-    dsp->functions->getsamplerate(dsp, &audioSettings.samplingRate);
-    audioSettings.frameSize = length;
-
-    int numChannelsIn = inBuffers->buffernumchannels[0];
-    int numChannelsOut = outBuffers->buffernumchannels[0];
-    float* in = inBuffers->buffers[0];
-    float* out = outBuffers->buffers[0];
-
-    memset(out, 0, numChannelsOut * length * sizeof(float));
-
-    if (!state->initialized)
+    FMOD_RESULT F_CALLBACK reverbRelease(FMOD_DSP_STATE* state)
     {
-        IPLAudioSettings audioSettings;
-        dsp->functions->getsamplerate(dsp, &audioSettings.samplingRate);
-        audioSettings.frameSize = length;
+        auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
 
-        // Validate context before allocation
-        if (!gContext)
+        iplAudioBufferFree(gContext, &effect->inBuffer);
+        iplAudioBufferFree(gContext, &effect->monoBuffer);
+        iplAudioBufferFree(gContext, &effect->reflectionsBuffer);
+        iplAudioBufferFree(gContext, &effect->outBuffer);
+
+        iplReflectionEffectRelease(&effect->reflectionEffect);
+        iplAmbisonicsDecodeEffectRelease(&effect->ambisonicsEffect);
+
+        gNewReverbSourceWritten = false;
+        iplSourceRelease(&gReverbSource[0]);
+        iplSourceRelease(&gReverbSource[1]);
+
+        delete state->plugindata;
+
+        return FMOD_OK;
+    }
+
+    FMOD_RESULT F_CALLBACK reverbReset(FMOD_DSP_STATE* state)
+    {
+        auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+        if (!effect)
+            return FMOD_OK;
+
+        effect->binaural = false;
+        effect->outputFormat = ParameterSpeakerFormatType::PARAMETER_FROM_INPUT;
+        return FMOD_OK;
+    }
+
+    FMOD_RESULT F_CALLBACK reverbProcess(FMOD_DSP_STATE* state,
+                                         unsigned int length,
+                                         const FMOD_DSP_BUFFER_ARRAY* inBuffers,
+                                         FMOD_DSP_BUFFER_ARRAY* outBuffers,
+                                         FMOD_BOOL inputsIdle,
+                                         FMOD_DSP_PROCESS_OPERATION operation)
+    {
+        if (operation == FMOD_DSP_PROCESS_QUERY)
         {
-            if (inBuffers->buffers[0] != outBuffers->buffers[0])
+            auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+            if (!initFmodOutBufferFormat(inBuffers, outBuffers, state, effect->outputFormat))
+                return FMOD_ERR_DSP_DONTPROCESS;
+
+            if (inputsIdle)
+                return FMOD_ERR_DSP_DONTPROCESS;
+        }
+        else if (operation == FMOD_DSP_PROCESS_PERFORM)
+        {
+            auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+
+            auto numChannelsIn = inBuffers->buffernumchannels[0];
+            auto numChannelsOut = outBuffers->buffernumchannels[0];
+            auto in = inBuffers->buffers[0];
+            auto out = outBuffers->buffers[0];
+
+            // Start by clearing the output buffer.
+            memset(out, 0, numChannelsOut * effect->frameSize * sizeof(float));
+
+            // Make sure that audio processing state has been initialized. If initialization fails, stop and emit silence.
+            auto initFlags = lazyInit(state, numChannelsIn, numChannelsOut);
+            if (!(initFlags & INIT_AUDIOBUFFERS) || !(initFlags & INIT_REFLECTIONEFFECT) || !(initFlags & INIT_AMBISONICSEFFECT))
+                return FMOD_OK;
+
+            if (gNewHRTFWritten)
             {
-                memcpy(outBuffers->buffers[0], inBuffers->buffers[0],
-                       length * inBuffers->buffernumchannels[0] * sizeof(float));
+                iplHRTFRelease(&gHRTF[0]);
+                gHRTF[0] = iplHRTFRetain(gHRTF[1]);
+
+                gNewHRTFWritten = false;
             }
+
+            if (gNewReverbSourceWritten)
+            {
+                iplSourceRelease(&gReverbSource[0]);
+                gReverbSource[0] = iplSourceRetain(gReverbSource[1]);
+
+                gNewReverbSourceWritten = false;
+            }
+
+            if (!gReverbSource[0])
+                return FMOD_OK;
+
+            auto listenerCoordinates = calcListenerCoordinates(state);
+
+            iplAudioBufferDeinterleave(gContext, in, &effect->inBuffer);
+            iplAudioBufferDownmix(gContext, &effect->inBuffer, &effect->monoBuffer);
+
+            IPLSimulationOutputs reverbOutputs{};
+            iplSourceGetOutputs(gReverbSource[0], IPL_SIMULATIONFLAGS_REFLECTIONS, &reverbOutputs);
+
+            IPLReflectionEffectParams reflectionParams = reverbOutputs.reflections;
+            reflectionParams.type = gSimulationSettings.reflectionType;
+            reflectionParams.numChannels = numChannelsForOrder(gSimulationSettings.maxOrder);
+            reflectionParams.irSize = numSamplesForDuration(gSimulationSettings.maxDuration, effect->sampleRate);
+            reflectionParams.tanDevice = gSimulationSettings.tanDevice;
+
+            if (gNewReflectionMixerWritten)
+            {
+                iplReflectionMixerRelease(&gReflectionMixer[0]);
+                gReflectionMixer[0] = iplReflectionMixerRetain(gReflectionMixer[1]);
+
+                gNewReflectionMixerWritten = false;
+            }
+
+            iplReflectionEffectApply(effect->reflectionEffect, &reflectionParams, &effect->monoBuffer, &effect->reflectionsBuffer, gReflectionMixer[0]);
+
+            if (gSimulationSettings.reflectionType != IPL_REFLECTIONEFFECTTYPE_TAN && !gReflectionMixer[0])
+            {
+                IPLAmbisonicsDecodeEffectParams ambisonicsParams;
+                ambisonicsParams.order = gSimulationSettings.maxOrder;
+                ambisonicsParams.hrtf = gHRTF[0];
+                ambisonicsParams.orientation = listenerCoordinates;
+                ambisonicsParams.binaural = numChannelsOut == 2 && !gHRTFDisabled && (effect->binaural) ? IPL_TRUE : IPL_FALSE;
+
+                iplAmbisonicsDecodeEffectApply(effect->ambisonicsEffect, &ambisonicsParams, &effect->reflectionsBuffer, &effect->outBuffer);
+
+                iplAudioBufferInterleave(gContext, &effect->outBuffer, out);
+            }
+
             return FMOD_OK;
         }
 
-        iplAudioBufferAllocate(gContext, 1, length, &state->monoBuffer);
-        iplAudioBufferAllocate(gContext, numChannelsOut, length, &state->outputBuffer);
-
-        if (gIsSimulationSettingsValid.load())
-        {
-            auto numAmbisonicChannels = numChannelsForOrder(gSimulationSettings.maxOrder);
-            iplAudioBufferAllocate(gContext, numAmbisonicChannels, length, &state->ambisonicsBuffer);
-
-            IPLReflectionEffectSettings reflectionSettings{};
-            reflectionSettings.type = gSimulationSettings.reflectionType;
-            reflectionSettings.irSize = numSamplesForDuration(gSimulationSettings.maxDuration, audioSettings.samplingRate);
-            reflectionSettings.numChannels = numAmbisonicChannels;
-            iplReflectionEffectCreate(gContext, &audioSettings, &reflectionSettings, &state->reflectionEffect);
-
-            IPLAmbisonicsDecodeEffectSettings ambisonicsSettings{};
-            ambisonicsSettings.speakerLayout = speakerLayoutForNumChannels(numChannelsOut);
-            ambisonicsSettings.hrtf = gHRTF[0];
-            ambisonicsSettings.maxOrder = gSimulationSettings.maxOrder;
-            iplAmbisonicsDecodeEffectCreate(gContext, &audioSettings, &ambisonicsSettings, &state->ambisonicsEffect);
-        }
-
-        state->initialized = true;
-    }
-
-    if (gNewHRTFWritten.load())
-    {
-        iplHRTFRelease(&gHRTF[0]);
-        gHRTF[0] = iplHRTFRetain(gHRTF[1]);
-        gNewHRTFWritten.store(false);
-    }
-
-    if (gNewReverbSourceWritten.load())
-    {
-        iplSourceRelease(&gReverbSource[0]);
-        gReverbSource[0] = iplSourceRetain(gReverbSource[1]);
-        gNewReverbSourceWritten.store(false);
-    }
-
-    if (!gReverbSource[0])
-        return FMOD_OK;
-
-    // Additional context validation before Steam Audio calls
-    if (!gContext)
-    {
-        if (inBuffers->buffers[0] != outBuffers->buffers[0])
-        {
-            memcpy(outBuffers->buffers[0], inBuffers->buffers[0],
-                   length * inBuffers->buffernumchannels[0] * sizeof(float));
-        }
         return FMOD_OK;
     }
 
-    auto listenerCoordinates = calcListenerCoordinates(dsp);
-
-    IPLAudioBuffer inBuffer;
-    inBuffer.numChannels = numChannelsIn;
-    inBuffer.numSamples = length;
-    inBuffer.data = &in;
-
-    iplAudioBufferDownmix(gContext, &inBuffer, &state->monoBuffer);
-
-    IPLSimulationOutputs reverbOutputs{};
-    iplSourceGetOutputs(gReverbSource[0], IPL_SIMULATIONFLAGS_REFLECTIONS, &reverbOutputs);
-
-    IPLReflectionEffectParams reflectionParams = reverbOutputs.reflections;
-    reflectionParams.type = gSimulationSettings.reflectionType;
-    reflectionParams.numChannels = numChannelsForOrder(gSimulationSettings.maxOrder);
-    reflectionParams.irSize = numSamplesForDuration(gSimulationSettings.maxDuration, audioSettings.samplingRate);
-
-    if (gNewReflectionMixerWritten.load())
+    FMOD_RESULT F_CALLBACK reverbSetParameterFloat(FMOD_DSP_STATE* dsp, int index, float value)
     {
-        iplReflectionMixerRelease(&gReflectionMixer[0]);
-        gReflectionMixer[0] = iplReflectionMixerRetain(gReflectionMixer[1]);
-        gNewReflectionMixerWritten.store(false);
-    }
+        if (!dsp || !dsp->plugindata)
+            return FMOD_ERR_INVALID_PARAM;
 
-    // Validate effects before calling
-    if (!state->reflectionEffect || !gReflectionMixer[0])
-    {
-        if (inBuffers->buffers[0] != outBuffers->buffers[0])
+        auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
+
+        switch (index)
         {
-            memcpy(outBuffers->buffers[0], inBuffers->buffers[0],
-                   length * inBuffers->buffernumchannels[0] * sizeof(float));
+            case IPL_FMODCORE_REVERB_MIXLEVEL:
+                state->mixLevel = value;
+                break;
+            default:
+                return FMOD_ERR_INVALID_PARAM;
         }
+
         return FMOD_OK;
     }
 
-    iplReflectionEffectApply(state->reflectionEffect, &reflectionParams, &state->monoBuffer, &state->ambisonicsBuffer, gReflectionMixer[0]);
-
-    IPLAmbisonicsDecodeEffectParams ambisonicsParams{};
-    ambisonicsParams.order = gSimulationSettings.maxOrder;
-    ambisonicsParams.hrtf = gHRTF[0];
-    ambisonicsParams.orientation = listenerCoordinates;
-    ambisonicsParams.binaural = (numChannelsOut == 2 && !gHRTFDisabled.load() && state->binaural) ? IPL_TRUE : IPL_FALSE;
-
-    if (!state->ambisonicsEffect)
+    FMOD_RESULT F_CALLBACK reverbSetParameterInt(FMOD_DSP_STATE* dsp, int index, int value)
     {
-        if (inBuffers->buffers[0] != outBuffers->buffers[0])
+        auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
+
+        switch (index)
         {
-            memcpy(outBuffers->buffers[0], inBuffers->buffers[0],
-                   length * inBuffers->buffernumchannels[0] * sizeof(float));
+        case IPL_FMODCORE_REVERB_SAMPLE_RATE:
+            state->sampleRate = value;
+            break;
+        case IPL_FMODCORE_REVERB_FRAME_SIZE:
+            state->frameSize = value;
+            break;
+        case IPL_FMODCORE_REVERB_OUTPUT_FORMAT:
+            state->outputFormat = static_cast<ParameterSpeakerFormatType>(value);
+            break;
+        default:
+            return FMOD_ERR_INVALID_PARAM;
         }
+
         return FMOD_OK;
     }
 
-    iplAmbisonicsDecodeEffectApply(state->ambisonicsEffect, &ambisonicsParams, &state->ambisonicsBuffer, &state->outputBuffer);
-
-    for (int i = 0; i < numChannelsOut; ++i)
+    FMOD_RESULT F_CALLBACK reverbSetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL value)
     {
-        applyVolumeRamp(state->mixLevel, state->mixLevel, length, state->outputBuffer.data[i]);
+        auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
+
+        switch (index)
+        {
+            case IPL_FMODCORE_REVERB_BINAURAL:
+                state->binaural = value;
+                break;
+            default:
+                return FMOD_ERR_INVALID_PARAM;
+        }
+
+        return FMOD_OK;
     }
 
-    iplAudioBufferInterleave(gContext, &state->outputBuffer, out);
-
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbSetParameterFloat(FMOD_DSP_STATE* dsp, int index, float value)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    switch (index)
+    FMOD_RESULT F_CALL reverbGetParameterBool(FMOD_DSP_STATE* state,
+        int index,
+        FMOD_BOOL* value,
+        char*)
     {
-    case IPL_FMODCORE_REVERB_MIXLEVEL:
-        state->mixLevel = value;
-        break;
-    default:
-        return FMOD_ERR_INVALID_PARAM;
+        auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+
+        switch (index)
+        {
+            case IPL_FMODCORE_REVERB_BINAURAL:
+                *value = effect->binaural;
+                break;
+            default:
+                return FMOD_ERR_INVALID_PARAM;
+        }
+
+        return FMOD_OK;
     }
 
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbSetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL value)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    switch (index)
+    FMOD_RESULT F_CALL reverbGetParameterInt(FMOD_DSP_STATE* state,
+        int index,
+        int* value,
+        char*)
     {
-    case IPL_FMODCORE_REVERB_BINAURAL:
-        state->binaural = (value != 0);
-        break;
-    default:
-        return FMOD_ERR_INVALID_PARAM;
+        auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+
+        switch (index)
+        {
+            case IPL_FMODCORE_REVERB_SAMPLE_RATE:
+                *value = static_cast<int>(effect->sampleRate);
+                break;
+            case IPL_FMODCORE_REVERB_FRAME_SIZE:
+                *value = static_cast<int>(effect->frameSize);
+                break;
+            case IPL_FMODCORE_REVERB_OUTPUT_FORMAT:
+                *value = static_cast<int>(effect->outputFormat);
+                break;
+            default:
+                return FMOD_ERR_INVALID_PARAM;
+        }
+
+        return FMOD_OK;
     }
 
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbSetParameterInt(FMOD_DSP_STATE* dsp, int index, int value)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    switch (index)
+    FMOD_RESULT F_CALL reverbGetParameterFloat(FMOD_DSP_STATE* state,
+        int index,
+        float* value,
+        char*)
     {
-    case IPL_FMODCORE_REVERB_SIMULATION_OUTPUTS_HANDLE:
-        state->simOutHandle = value;
-        break;
-    case IPL_FMODCORE_REVERB_OUTPUT_FORMAT:
-        state->outputFormatType = static_cast<ParameterSpeakerFormatType>(value);
-        break;
-    default:
-        return FMOD_ERR_INVALID_PARAM;
+        auto effect = reinterpret_cast<ReverbEffectState*>(state->plugindata);
+
+        switch (index)
+        {
+            case IPL_FMODCORE_REVERB_MIXLEVEL:
+                *value = static_cast<float>(effect->mixLevel);
+                break;
+            default:
+                return FMOD_ERR_INVALID_PARAM;
+        }
+
+        return FMOD_OK;
     }
 
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbGetParameterFloat(FMOD_DSP_STATE* dsp, int index, float* value, char* valuestr)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    switch (index)
+    namespace ReverbEffect
     {
-    case IPL_FMODCORE_REVERB_MIXLEVEL:
-        *value = state->mixLevel;
-        break;
-    default:
-        return FMOD_ERR_INVALID_PARAM;
+        void initReverbParameterDescs()
+        {
+            for (auto i = 0; i < IPL_FMODCORE_REVERB_NUM_PARAMS; ++i)
+            {
+                gReverbParameterDescsArray[i] = &gReverbParameterDescs[i];
+            }
+
+            gReverbParameterDescs[IPL_FMODCORE_REVERB_BINAURAL].booldesc = {false};
+            gReverbParameterDescs[IPL_FMODCORE_REVERB_MIXLEVEL].floatdesc = {0.0f, 1.0f, 1.0f};
+            gReverbParameterDescs[IPL_FMODCORE_REVERB_SAMPLE_RATE].intdesc = { 0, 100000, 48000 };
+            gReverbParameterDescs[IPL_FMODCORE_REVERB_FRAME_SIZE].intdesc = {0, 100000, 512};
+            gReverbParameterDescs[IPL_FMODCORE_REVERB_OUTPUT_FORMAT].intdesc = {0, 2, 0, false, gReverbOutputFormatValues};
+        }
     }
 
-    return FMOD_OK;
-}
+    // --------------------------------------------------------------------------------------------------------------------
+    // DSP Description
+    // --------------------------------------------------------------------------------------------------------------------
 
-FMOD_RESULT F_CALLBACK reverbGetParameterInt(FMOD_DSP_STATE* dsp, int index, int* value, char* valuestr)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    switch (index)
+    /** Descriptor for the Reverb effect. */
+    FMOD_DSP_DESCRIPTION gReverbEffect =
     {
-    case IPL_FMODCORE_REVERB_SIMULATION_OUTPUTS_HANDLE:
-        *value = state->simOutHandle;
-        break;
-    case IPL_FMODCORE_REVERB_OUTPUT_FORMAT:
-        *value = state->outputFormatType;
-        break;
-    default:
-        return FMOD_ERR_INVALID_PARAM;
-    }
-
-    return FMOD_OK;
-}
-
-FMOD_RESULT F_CALLBACK reverbGetParameterBool(FMOD_DSP_STATE* dsp, int index, FMOD_BOOL* value, char* valuestr)
-{
-    if (!dsp || !dsp->plugindata)
-        return FMOD_ERR_INVALID_PARAM;
-
-    auto* state = static_cast<ReverbEffectState*>(dsp->plugindata);
-
-    switch (index)
-    {
-    case IPL_FMODCORE_REVERB_BINAURAL:
-        *value = state->binaural;
-        break;
-    default:
-        return FMOD_ERR_INVALID_PARAM;
-    }
-
-    return FMOD_OK;
-}
-
-namespace ReverbEffect {
-void initReverbParameterDescs()
-{
-    for (auto i = 0; i < IPL_FMODCORE_REVERB_NUM_PARAMS; ++i)
-    {
-        gReverbParameterDescsArray[i] = &gReverbParameterDescs[i];
-    }
-
-    gReverbParameterDescs[IPL_FMODCORE_REVERB_BINAURAL].booldesc = {false};
-    gReverbParameterDescs[IPL_FMODCORE_REVERB_MIXLEVEL].floatdesc = {0.0f, 1.0f, 1.0f};
-    gReverbParameterDescs[IPL_FMODCORE_REVERB_SIMULATION_OUTPUTS_HANDLE].intdesc = {-1, 10000, -1};
-    gReverbParameterDescs[IPL_FMODCORE_REVERB_OUTPUT_FORMAT].intdesc = {0, 2, 0, false, gReverbOutputFormatValues};
-}
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-// DSP Description
-// --------------------------------------------------------------------------------------------------------------------
-FMOD_DSP_DESCRIPTION gReverbEffect = {
-    FMOD_PLUGIN_SDK_VERSION,
-    "Steam Audio FMOD Core Reverb",
-    STEAMAUDIO_FMODCORE_VERSION,
-    1, 1,
-    reverbCreate,
-    reverbRelease,
-    reverbReset,
-    nullptr,
-    reverbProcess,
-    nullptr,
-    IPL_FMODCORE_REVERB_NUM_PARAMS,
-    gReverbParameterDescsArray,
-    reverbSetParameterFloat,
-    reverbSetParameterInt,
-    reverbSetParameterBool,
-    nullptr,
-    reverbGetParameterFloat,
-    reverbGetParameterInt,
-    reverbGetParameterBool,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr
-};
+        FMOD_PLUGIN_SDK_VERSION,
+        "Steam Audio Reverb",
+        STEAMAUDIO_FMODCORE_VERSION,
+        1,
+        1,
+        reverbCreate,
+        reverbRelease,
+        nullptr,
+        nullptr,
+        reverbProcess,
+        nullptr,
+        IPL_FMODCORE_REVERB_NUM_PARAMS,
+        gReverbParameterDescsArray,
+        reverbSetParameterFloat,
+        reverbSetParameterInt,
+        reverbSetParameterBool,
+        nullptr,
+        reverbGetParameterFloat,
+        reverbGetParameterInt,
+        reverbGetParameterBool,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr,
+        nullptr
+    };
 
 }
